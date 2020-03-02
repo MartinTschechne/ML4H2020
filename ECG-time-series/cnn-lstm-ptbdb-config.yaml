@@ -1,9 +1,9 @@
-experiment_name: base-ptbdb
-model_id: base-model
+experiment_name: cnn-lstm-ptbdb
+model_id: cnn-lstm-model
 dataset: ptbdb
 upsample: True
 val_split_size: 0.2
 batch_size: 128
-epochs: 2
+epochs: 500
 debug: False
 patience: 3
