@@ -83,12 +83,9 @@ def main():
     ### eval ###
     print("Evaluation:")
     model.load_weights(model_path)
-    pred_test = model.predict(test)
-    pred_test = np.argmax(pred_test, axis=1)
-    pred_val = model.predict(val)
-    pred_val = np.argmax(pred_val, axis=1)
-    pred_train = model.predict(train)
-    pred_train = np.argmax(pred_train, axis=1)
+    pred_test = model.predict(test).argmax(1)
+    pred_val = model.predict(val).argmax(1)
+    pred_train = model.predict(train).argmax(1)
     try:
         pickle.dump(pred_test,open(f"./{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
     except Exception as e:
