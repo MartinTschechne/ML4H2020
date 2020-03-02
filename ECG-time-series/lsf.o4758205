@@ -1,0 +1,36 @@
+Sender: LSF System <lsfadmin@lo-s4-032>
+Subject: Job 4758205: <./start.sh> in cluster <leonhard> Exited
+
+Job <./start.sh> was submitted from host <lo-login-01> by user <martints> in cluster <leonhard> at Mon Mar  2 20:26:25 2020
+Job was executed on host(s) <lo-s4-032>, in queue <gpu.4h>, as user <martints> in cluster <leonhard> at Mon Mar  2 20:26:34 2020
+</cluster/home/martints> was used as the home directory.
+</cluster/home/martints/ML4H2020/ECG-time-series> was used as the working directory.
+Started at Mon Mar  2 20:26:34 2020
+Terminated at Mon Mar  2 20:26:39 2020
+Results reported at Mon Mar  2 20:26:39 2020
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+./start.sh
+------------------------------------------------------------
+
+Exited with exit code 126.
+
+Resource usage summary:
+
+    CPU time :                                   0.17 sec.
+    Max Memory :                                 6 MB
+    Average Memory :                             1.67 MB
+    Total Requested Memory :                     1024.00 MB
+    Delta Memory :                               1018.00 MB
+    Max Swap :                                   -
+    Max Processes :                              3
+    Max Threads :                                3
+    Run time :                                   29 sec.
+    Turnaround time :                            14 sec.
+
+The output (if any) follows:
+
+/cluster/shadow/.lsbatch/1583177185.4758205: line 8: ./start.sh: Permission denied
