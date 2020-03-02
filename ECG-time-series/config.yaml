@@ -1,0 +1,8 @@
+experiment_name: base-model-mitbih
+model_id: base-model
+dataset: mitbih
+upsample: True
+val_split_size: 0.2
+batch_size: 128
+epochs: 500
+debug: False
