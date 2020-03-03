@@ -22,8 +22,8 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 
 ### **Models**
 - **Base models**:
-    - LSTM:
-    - CNN+LSTM:
+    - LSTM + Dense:
+    - CNN + LSTM + Dense:
 - **Transfer models**:
 - **XGBoosted models**:
 
@@ -34,12 +34,21 @@ Performance on test data set:
 |Models          |MIT-BIH<sup>*</sup>               |PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
 |----------------|:----------------------:|:-----:|:------:|:---:|
 |LSTM + Dense    |F1: **0.**<br>Acc: **0.**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**||
-|CNN + LSTM + Dense |F1: **0.973**<br>Acc: **0.971**|F1: **0.951** Acc: **0.951**<br>AUROC: **0.947** AUPRC: **0.982**|F1: **0.990** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: **0.994** Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
-|LSTM + XGB      |F1: **0.**<br>Acc: **0.**|||-
-|CNN + LSTM + XGB|F1: **0.**<br>Acc: **0.**|||-
+|CNN + LSTM + Dense |F1: **0.868**<br>Acc: **0.971**|F1: **0.940** Acc: **0.951**<br>AUROC: **0.947** AUPRC: **0.982**|F1: **0.988** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: **0.992** Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
+|LSTM + XGB<sup>&Dagger;</sup> |F1: **0.**<br>Acc: **0.**||| - |
+|CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.**<br>Acc: **0.**||F1: **0.981** Acc: **0.990**<br>AUROC: **0.977** AUPRC: **0.991**|-|
+|Kachuee, et al.[1]|Acc: **0.934**| - |F1: **0.951**<br>Acc: **0.959**| - |
+|Baseline[2]|F1: **0.915**<br>Acc: **0.985**|F1: **0.988**<br>Acc: **0.983**|F1: **0.969**<br>Acc: **0.956**|F1: **0.994**<br>Acc: **0.992**|
 
 <sup>*</sup> Only trained on this dataset  
 <sup>°</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **frozen** base layers  
-<sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers
+<sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
+<sup>&Dagger;</sup> Base layers always frozen to train XGBoost
 
 `python train.py --config config.yaml`
+
+### References
+
+[1] Mohammad Kachuee, Shayan Fazeli, and Majid Sarrafzadeh. "ECG Heartbeat Classification: A Deep Transferable Representation." [arXiv preprint arXiv:1805.00794 (2018) ](https://arxiv.org/abs/1805.00794).
+
+[2] CVxTz's GitHub implementation: ECG_Heartbeat_Classification ([link](https://github.com/CVxTz/ECG_Heartbeat_Classification))

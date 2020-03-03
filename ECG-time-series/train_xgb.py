@@ -2,12 +2,10 @@ import os
 import argparse
 import numpy as np
 from data.make_dataset import load_mitbih, load_ptbdb, upsample
-from models.models import get_model, get_transfer_model
-from keras import optimizers
-from keras.losses import SparseCategoricalCrossentropy
-from keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger, LearningRateScheduler
+from models.models import get_feature_extractor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, auc, precision_recall_curve
+from xgboost import XGBClassifier
 import pickle
 import yaml
 
@@ -35,65 +33,39 @@ def main():
         train, test, y_train, y_test = load_mitbih()
     elif config['dataset'] == 'ptbdb':
         train, test, y_train, y_test = load_ptbdb()
-
     N_CLASSES = len(np.unique(y_train))
-    _, data_dist = np.unique(y_train,return_counts=True)
-    print(f"Data distribution: {data_dist}")
-    data_dim = train.shape
-    print(f"Data shape: {data_dim}")
     train, val, y_train, y_val = train_test_split(train, y_train,
                                                 test_size=config['val_split_size'],
                                                 stratify=y_train)
-    if config['upsample']:
-        train_up, y_train_up = upsample(train, y_train)
 
     ### define model ###
-    if config['model_id'] == 'transfer-model':
-        model = get_transfer_model(N_CLASSES,config['base_model_path'],
-                                    config['base_weights_path'],
-                                    config['freeze-weights'])
-    else:
-        model = get_model(config['model_id'],N_CLASSES)
-    model.save(f"./{dirName}/{config['experiment_name']}.h5")
+    feature_extractor = get_feature_extractor(config['base_model_path'],
+                          config['base_weights_path'])
 
-    model_yaml = model.to_yaml()
-    with open(f"./{dirName}/{config['experiment_name']}.yaml", "w") as yaml_file:
-        yaml_file.write(model_yaml)
-
-    opt = optimizers.Adam(clipnorm=1.)
-    model.compile(loss=SparseCategoricalCrossentropy(from_logits=True),
-                  optimizer=opt,
-                  metrics=['sparse_categorical_accuracy'])
-
-    ### train ###
-    model_path = f"./{dirName}/{config['experiment_name']}-weights.h5"
-    checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
-    early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
-    csv_logger = CSVLogger(f"./{dirName}/{config['experiment_name']}.log")
-    lr_schuduler = LearningRateScheduler(exp_decay,verbose=1)
-    callbacks_list = [checkpoint, early, csv_logger]
-    if config['lr_schuduler']:
-        callbacks_list.append(lr_schuduler)
-
-    ### for debugging only
-    if config['debug']:
-        train_up, _, y_train_up, _ = train_test_split(train_up, y_train_up,train_size=100)
+    xgb_model = XGBClassifier(max_depth=10,
+                              n_estimators=256,
+                              objective='binary:logistic',
+                              eval_metric=['logloss','aucpr','auc'],
+                              learning_rate = 0.1,
+                              n_jobs=-1,
+                              random_state=42)
 
     print('Start training ...')
-    history = model.fit(train_up, y_train_up,
-                        batch_size=config['batch_size'],
-                        epochs=config['epochs'],
-                        shuffle=True,
-                        validation_data = (val,y_val),
-                        callbacks=callbacks_list)
+    train_features = feature_extractor.predict(train,verbose=True)
+    val_features = feature_extractor.predict(val,verbose=True)
+    xgb_model.fit(train_features,y_train,
+                  eval_set=[(val_features,y_val)],
+                  early_stopping_rounds=3,
+                  verbose=True)
     print('Stopped Training.')
+    model_path = f"./{dirName}/{config['experiment_name']}-xgb.json"
+    xgb_model.save_model(model_path)
 
     ### eval ###
-    print("Evaluation:")
-    model.load_weights(model_path)
-    pred_test = model.predict(test,verbose=True).argmax(1)
-    pred_val = model.predict(val,verbose=True).argmax(1)
-    pred_train = model.predict(train,verbose=True).argmax(1)
+    test_features = feature_extractor.predict(test)
+    pred_test = xgb_model.predict(test_features)
+    pred_val = xgb_model.predict(val_features)
+    pred_train = xgb_model.predict(train_features)
     try:
         pickle.dump(pred_test,open(f"./{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
     except Exception as e:
@@ -121,11 +93,7 @@ def main():
 
     return 0
 
-def exp_decay(epoch):
-   initial_lrate = 1e-3
-   k = 0.1
-   lrate = initial_lrate * np.exp(-k*epoch)
-   return lrate
+
 
 if __name__ == '__main__':
     main()

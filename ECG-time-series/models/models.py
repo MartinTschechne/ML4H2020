@@ -61,6 +61,20 @@ def get_transfer_model(n_classes, model_path, weights_path, freeze_bottom_layers
             print(f"Layer: {layer.name}, Trianable: {layer.trainable}")
     return transfer_model
 
+def get_feature_extractor(model_path, weights_path):
+    base_model = load_model(model_path)
+    base_model.load_weights(weights_path)
+    len_total_layers = len(base_model.layers)
+    feature_layer_idx = len_total_layers - 3
+    out = base_model.get_layer(index=feature_layer_idx).output
+    feature_model = Model(inputs=base_model.inputs,
+                    outputs=out)
+    feature_model.summary()
+    for layer in base_model.layers[:feature_layer_idx]:
+        layer.trainable = False
+    for layer in feature_model.layers:
+            print(f"Layer: {layer.name}, Trianable: {layer.trainable}")
+    return feature_model
 
 def get_model(model_id, n_classes):
     if model_id == 'cnn-lstm-model':
