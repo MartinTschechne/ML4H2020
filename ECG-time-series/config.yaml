@@ -7,3 +7,4 @@ batch_size: 128
 epochs: 2
 debug: False
 patience: 3
+lr_schuduler: False

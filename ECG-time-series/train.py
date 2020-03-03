@@ -2,10 +2,10 @@ import os
 import argparse
 import numpy as np
 from data.make_dataset import load_mitbih, load_ptbdb, upsample
-from models.models import get_model
+from models.models import get_model, get_transfer_model
 from keras import optimizers
 from keras.losses import SparseCategoricalCrossentropy
-from keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger
+from keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger, LearningRateScheduler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, auc, precision_recall_curve
 import pickle
@@ -48,7 +48,12 @@ def main():
         train_up, y_train_up = upsample(train, y_train)
 
     ### define model ###
-    model = get_model(config['model_id'],N_CLASSES)
+    if config['model_id'] == 'transfer-model':
+        model = get_transfer_model(N_CLASSES,config['base_model_path'],
+                                    config['base_weights_path'],
+                                    config['freeze-weights'])
+    else:
+        model = get_model(config['model_id'],N_CLASSES)
     model.save(f"./{dirName}/{config['experiment_name']}.h5")
 
     model_yaml = model.to_yaml()
@@ -65,7 +70,10 @@ def main():
     checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = CSVLogger(f"./{dirName}/{config['experiment_name']}.log")
+    lr_schuduler = LearningRateScheduler(exp_decay,verbose=1)
     callbacks_list = [checkpoint, early, csv_logger]
+    if config['lr_schuduler']:
+        callbacks_list.append(lr_schuduler)
 
     ### for debugging only
     if config['debug']:
@@ -112,6 +120,12 @@ def main():
         documents = yaml.dump(res_dict, file)
 
     return 0
+
+def exp_decay(epoch):
+   initial_lrate = 1e-3
+   k = 0.1
+   lrate = initial_lrate * np.exp(-k*epoch)
+   return lrate
 
 if __name__ == '__main__':
     main()
