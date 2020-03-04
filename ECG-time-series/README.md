@@ -29,14 +29,16 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 
 ### **Results**
 
+MIT-BIH No Information Rate: **0.828**  
+PTBDB No Information Rate: **0.722**  
 Performance on test data set:
 
-|Models          |MIT-BIH<sup>*</sup>               |PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
+|Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
 |----------------|:----------------------:|:-----:|:------:|:---:|
 |LSTM + Dense    |F1: **0.**<br>Acc: **0.**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**||
 |CNN + LSTM + Dense |F1: **0.868**<br>Acc: **0.971**|F1: **0.940** Acc: **0.951**<br>AUROC: **0.947** AUPRC: **0.982**|F1: **0.988** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: **0.992** Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
 |LSTM + XGB<sup>&Dagger;</sup> |F1: **0.**<br>Acc: **0.**||| - |
-|CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.**<br>Acc: **0.**||F1: **0.981** Acc: **0.990**<br>AUROC: **0.977** AUPRC: **0.991**|-|
+|CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.**<br>Acc: **0.**|F1: **0.983** Acc: **0.986**<br>AUROC: **0.980** AUPRC: **0.993**|F1: **0.981** Acc: **0.990**<br>AUROC: **0.977** AUPRC: **0.991**|-|
 |Kachuee, et al.[1]|Acc: **0.934**| - |F1: **0.951**<br>Acc: **0.959**| - |
 |Baseline[2]|F1: **0.915**<br>Acc: **0.985**|F1: **0.988**<br>Acc: **0.983**|F1: **0.969**<br>Acc: **0.956**|F1: **0.994**<br>Acc: **0.992**|
 

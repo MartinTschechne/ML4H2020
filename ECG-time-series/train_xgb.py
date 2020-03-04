@@ -44,8 +44,8 @@ def main():
 
     xgb_model = XGBClassifier(max_depth=10,
                               n_estimators=256,
-                              objective='binary:logistic',
-                              eval_metric=['logloss','aucpr','auc'],
+                              objective='multi:softmax',
+                              eval_metric=['merror','mlogloss'],
                               learning_rate = 0.1,
                               n_jobs=-1,
                               random_state=42)
@@ -62,7 +62,7 @@ def main():
     xgb_model.save_model(model_path)
 
     ### eval ###
-    test_features = feature_extractor.predict(test)
+    test_features = feature_extractor.predict(test,verbose=True)
     pred_test = xgb_model.predict(test_features)
     pred_val = xgb_model.predict(val_features)
     pred_train = xgb_model.predict(train_features)
