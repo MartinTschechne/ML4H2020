@@ -50,6 +50,7 @@ test-data:
     precision: 0.9962097283638661
     recall: 0.9807213930348259
     support: 1608
+  accuracy: 0.9849260003654303
   macro avg:
     f1-score: 0.9158642579928091
     precision: 0.9603887718296343

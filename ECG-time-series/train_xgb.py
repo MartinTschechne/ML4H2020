@@ -31,8 +31,12 @@ def main():
     print("Load data ...")
     if config['dataset'] == 'mitbih':
         train, test, y_train, y_test = load_mitbih()
+        objective = 'multi:softmax'
+        eval_metric = ['merror', 'mlogloss']
     elif config['dataset'] == 'ptbdb':
         train, test, y_train, y_test = load_ptbdb()
+        objective = 'binary:logistic'
+        eval_metric = ['logloss', 'aucpr', 'auc']
     N_CLASSES = len(np.unique(y_train))
     train, val, y_train, y_val = train_test_split(train, y_train,
                                                 test_size=config['val_split_size'],
@@ -44,10 +48,10 @@ def main():
 
     xgb_model = XGBClassifier(max_depth=10,
                               n_estimators=256,
-                              objective='multi:softmax',
-                              eval_metric=['merror','mlogloss'],
+                              objective=objective,
+                              eval_metric=eval_metric,
                               learning_rate = 0.1,
-                              n_jobs=-1,
+                              nthread=4,
                               random_state=42)
 
     print('Start training ...')
