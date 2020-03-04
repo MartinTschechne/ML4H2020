@@ -3,6 +3,20 @@ ML4H2020
 
 Repository for projects of the course "Machine Learning for Health Care".
 
+**Authors** :  
+Han Bai  
+Nora Moser  
+Martin Tschechne (martints@ethz.ch)
+
+
+## Project 1 - ECG Time Series
+Classifying ECG signals of the [MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/) and the [PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/) by Recurrent Neural Networks and make use of Transfer Learning techniques in order to improve predictive performance. Finally compare models performance to the results obtained by Kachuee, et al.[1]
+
+
+### References
+
+[1] Mohammad Kachuee, Shayan Fazeli, and Majid Sarrafzadeh. "ECG Heartbeat Classification: A Deep Transferable Representation." [arXiv preprint arXiv:1805.00794 (2018) ](https://arxiv.org/abs/1805.00794).
+
 Project Organization
 ------------
 
