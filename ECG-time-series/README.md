@@ -10,7 +10,11 @@
     Number of Categories: 5  
     Sampling Frequency: 125Hz  
     Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)  
-    Classes: ['N': 0, 'S': 1, 'V': 2, 'F': 3, 'Q': 4]
+    Classes: ['N' (Normal):                        0, 
+              'S' (Supraventricular ectopic beat): 1, 
+              'V' (Ventricular ectopic beat):      2, 
+              'F' (Fusion beat):                   3, 
+              'Q' (Unknown beat):                  4]
 
 - **The PTB Diagnostic ECG Database**  
     Number of Samples: 14552  
