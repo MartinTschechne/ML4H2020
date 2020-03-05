@@ -1,7 +1,0 @@
-experiment_name: transfer-xgb-cnn-lstm-ptbdb
-model_id: transfer_model
-base_model_path: ./cnn-lstm-mitbih/cnn-lstm-mitbih.h5
-base_weights_path: ./cnn-lstm-mitbih/cnn-lstm-mitbih-weights.h5
-dataset: ptbdb
-val_split_size: 0.2
-debug: False

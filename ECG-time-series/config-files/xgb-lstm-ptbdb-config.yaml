@@ -1,0 +1,7 @@
+experiment_name: xgb-lstm-ptbdb
+model_id: transfer_model
+base_model_path: ./results/lstm-ptbdb/lstm-ptbdb.h5
+base_weights_path: ./results/lstm-ptbdb/lstm-ptbdb-weights.h5
+dataset: ptbdb
+val_split_size: 0.2
+debug: False

@@ -1,0 +1,13 @@
+experiment_name: frozen-transfer-cnn-lstm-ptbdb
+model_id: transfer-model
+base_model_path: ./results/cnn-lstm-mitbih/cnn-lstm-mitbih.h5
+base_weights_path: ./results/cnn-lstm-mitbih/cnn-lstm-mitbih-weights.h5
+freeze-weights: True
+dataset: ptbdb
+upsample: True
+val_split_size: 0.2
+batch_size: 128
+epochs: 100
+debug: False
+patience: 3
+lr_schuduler: True

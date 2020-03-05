@@ -1,0 +1,10 @@
+experiment_name: lstm-mitbih
+model_id: lstm-model
+dataset: mitbih
+upsample: True
+val_split_size: 0.2
+batch_size: 128
+epochs: 500
+debug: False
+patience: 3
+lr_schuduler: False

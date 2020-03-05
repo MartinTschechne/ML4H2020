@@ -22,7 +22,7 @@ def main():
     except Exception as e:
         print('Error reading the config file')
 
-    dirName = config['experiment_name']
+    dirName = './results/'+config['experiment_name']
     if not os.path.exists(dirName):
         os.mkdir(dirName)
         print("Directory " , dirName ,  " Created ")
@@ -54,10 +54,10 @@ def main():
                                     config['freeze-weights'])
     else:
         model = get_model(config['model_id'],N_CLASSES)
-    model.save(f"./{dirName}/{config['experiment_name']}.h5")
+    model.save(f"{dirName}/{config['experiment_name']}.h5")
 
     model_yaml = model.to_yaml()
-    with open(f"./{dirName}/{config['experiment_name']}.yaml", "w") as yaml_file:
+    with open(f"{dirName}/{config['experiment_name']}.yaml", "w") as yaml_file:
         yaml_file.write(model_yaml)
 
     opt = optimizers.Adam(clipnorm=1.)
@@ -66,10 +66,10 @@ def main():
                   metrics=['sparse_categorical_accuracy'])
 
     ### train ###
-    model_path = f"./{dirName}/{config['experiment_name']}-weights.h5"
+    model_path = f"{dirName}/{config['experiment_name']}-weights.h5"
     checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
-    csv_logger = CSVLogger(f"./{dirName}/{config['experiment_name']}.log")
+    csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_schuduler = LearningRateScheduler(exp_decay,verbose=1)
     callbacks_list = [checkpoint, early, csv_logger]
     if config['lr_schuduler']:
@@ -95,7 +95,7 @@ def main():
     pred_val = model.predict(val,verbose=True).argmax(1)
     pred_train = model.predict(train,verbose=True).argmax(1)
     try:
-        pickle.dump(pred_test,open(f"./{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
+        pickle.dump(pred_test,open(f"{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
     except Exception as e:
         print(e)
 
@@ -116,7 +116,7 @@ def main():
                     'train-data':classification_report(y_train,pred_train,output_dict=True)}
     confmat_dict = {'confusion_matrix':confusion_matrix(y_test, pred_test).tolist()}
     res_dict = {**report_dict, **confmat_dict}
-    with open(f'./{dirName}/eval.yaml', 'w') as file:
+    with open(f'{dirName}/eval.yaml', 'w') as file:
         documents = yaml.dump(res_dict, file)
 
     return 0

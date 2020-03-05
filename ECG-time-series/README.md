@@ -35,7 +35,7 @@ Performance on test data set:
 
 |Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
 |----------------|:----------------------:|:-----:|:------:|:---:|
-|LSTM + Dense    |F1: **0.184**<br>Acc: **0.823**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**||
+|LSTM + Dense    |F1: **0.184**<br>Acc: **0.823**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**|F1: **0.419** Acc: **0.722**<br>AUROC: **0.5** AUPRC: **0.861**||
 |CNN + LSTM + Dense |F1: **0.868**<br>Acc: **0.971**|F1: **0.940** Acc: **0.951**<br>AUROC: **0.947** AUPRC: **0.982**|F1: **0.988** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: **0.992** Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
 |LSTM + XGB<sup>&Dagger;</sup> |F1: **0.875**<br>Acc: **0.976**|F1: **0.971** Acc: **0.977**<br>AUROC: **0.968** AUPRC: **0.988**|F1: **0.963** Acc: **0.970**<br>AUROC: **0.955** AUPRC: **0.983**| - |
 |CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.916**<br>Acc: **0.985**|F1: **0.983** Acc: **0.986**<br>AUROC: **0.980** AUPRC: **0.993**|F1: **0.981** Acc: **0.990**<br>AUROC: **0.977** AUPRC: **0.991**|-|
