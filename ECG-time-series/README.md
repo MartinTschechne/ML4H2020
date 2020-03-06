@@ -10,10 +10,10 @@
     Number of Categories: 5  
     Sampling Frequency: 125Hz  
     Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)  
-    Classes: ['N' (Normal):                        0, 
-              'S' (Supraventricular ectopic beat): 1, 
-              'V' (Ventricular ectopic beat):      2, 
-              'F' (Fusion beat):                   3, 
+    Classes: ['N' (Normal):                        0,
+              'S' (Supraventricular ectopic beat): 1,
+              'V' (Ventricular ectopic beat):      2,
+              'F' (Fusion beat):                   3,
               'Q' (Unknown beat):                  4]
 
 - **The PTB Diagnostic ECG Database**  
@@ -51,7 +51,19 @@ Performance on test data set:
 <sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
 <sup>&Dagger;</sup> Base layers always frozen to train XGBoost
 
-`python train.py --config config.yaml`
+### Reproducibility
+
+To reproduce the results, select a configuration file from the `config-file` directory and run
+
+`python train.py --config ./config-files/config.yaml`
+
+respectively
+
+`python train_xgb.py --config ./config-files/gxb-config.yaml`
+
+to reproduce the results of the XGBoosted models.
+
+Performance metrics for each model as well as weights, architectures and test set predictions are saved in the `results` folder in a single folder for each model.
 
 ### References
 
