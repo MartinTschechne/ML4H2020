@@ -41,9 +41,16 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 ### **Models**
 - **Base Models**:
     - LSTM + FC: Three LSTM cells with decreasing number of units followed by a relu-activated fully-connected layer and a softmax output layer.
-    <p align="center"><img src="./visualization/lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></p>
+
     - CNN + LSTM + FC: A combination of 1D max-pooled convolutional layers with one succeeding LSTM cell, followed by a relu-activated fully-connected layer and a softmax output layer.  
-    <p align="center"><img src="./visualization/cnn-lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></p>
+
+    <center>
+
+    |LSTM + FC| CNN + LSTM + FC|
+    |---|---|
+    |<img src="./visualization/lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200">|<img src="./visualization/cnn-lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200">|
+
+    </center>
 
     We refer to all layers before the fully connected layers as *base layers* or *feature extractors*.
 - **Transfer Learning Models**:
@@ -58,6 +65,8 @@ MIT-BIH No Information Rate: **0.828**
 PTBDB No Information Rate: **0.722**  
 Performance on test data set:
 
+<center>
+
 |Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
 |----------------|:----------------------:|:-----:|:------:|:---:|
 |LSTM + FC    |F1: **0.184**<br>Acc: **0.823**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**|F1: **0.419** Acc: **0.722**<br>AUROC: **0.5** AUPRC: **0.861**|F1: **0.371** Acc: **0.565**<br>AUROC: **0.397** AUPRC: **0.805**|
@@ -68,6 +77,8 @@ Performance on test data set:
 |Kachuee, et al.[1]|Acc: **0.934**| - |F1: **0.951**<br>Acc: **0.959**| - |
 |Baseline[2]|F1: **0.915**<br>Acc: **0.985**|F1: **0.988**<br>Acc: **0.983**|F1: **0.969**<br>Acc: **0.956**|F1: **0.994**<br>Acc: **0.992**|
 
+</center>
+
 <sup>*</sup> Only trained on this dataset  
 <sup>°</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **frozen** base layers  
 <sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
@@ -77,10 +88,14 @@ Performance on test data set:
 
 Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space.
 
+<center>
+
 ||t-SNE|UMAP|PCA|  
 |:---:|:---:|:---:|:---:|  
 |**MIT-BIH**|<img src="visualization/mitbih-tsne-50.png?" width="250">|<img src="visualization/mitbih-umap.png?" width="250">|<img src="visualization/mitbih-pca.png?" width="250">|
 |**PTBDB**|<img src="visualization/ptbdb-tsne-50.png?" width="250">|<img src="visualization/ptbdb-umap.png?" width="250">|<img src="visualization/ptbdb-pca.png?" width="250">|
+
+</center>
 
 ### Reproducibility
 
