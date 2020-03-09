@@ -1,7 +1,21 @@
 ## **Project 1 - ECG Time Series**
+by Martin Tschechne, Han Bai, Nora Moser
+
+### **Motivation**
+
+Electrocardiograms (ECG) are a non-invasive, inexpensive quick technique to visualize the heartbeat of a patient and therefore a commonly used method in medicine to discover diseases and malfunctions of the heart, such as rhythm disturbances or inadequate blood flow. Due to the vast availability of ECGs, thanks to wearables and mobile devices, automatically analyzing these becomes more and more important.  
+In contrast to the huge amount of data available, labeling data is still a manual very expensive job which takes human experts hundreds of hours. Often times it is infeasible to label all data. However to reduce overfitting and build well-generalizing machine learning models large amounts of training examples are needed. To overcome this issue *Transfer Learning* becomes a valuable approach. Transfer Learning makes use of a pre-trained model, trained on a large data set to solve a similar tasks with structurally identical data and retraining i.e. fine-tuning this model on the data set of interest. Pre-trained models have already learned low-level features present in both data sets and can therefore be utilized as feature-extractors. Training a new model from scratch becomes unnecessary. This speeds up training and improves generalization of models.
+
+
+<p align="center"><img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500"></p>
+
+Above are five examples of different ECG signals, representing different beat patterns (normal and unnormal), taken from the MIT-BIH data set.
 
 ### **Task**
-<p align="center"><img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500"></p>
+
+The first task at hand was to train a Recurrent Neural Network model on ECG time signals on two different data sets independently (one multi-class data set and one binary-class data set), in order to classify characteristic beat patterns.  
+Secondly the model from the larger multi-class data set is used as feature-extractor for the smaller binary-class data set and retrained with frozen layers and unfrozen layers. Here the effect of transfer learning on performance metrics such as Accuracy, F1-Score, AUCOR and AUCPR is studied.  
+Further, more sophisticated model architectures such as combinations of Convolutional Neural Networks and LSTM cells or gradient boosting instead of fully-connected layers are tested.
 
 ### **Data**
 
@@ -26,17 +40,17 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 
 ### **Models**
 - **Base Models**:
-    - LSTM + FC:
+    - LSTM + FC: Three LSTM cells with decreasing number of units followed by a relu-activated fully-connected layer and a softmax output layer.
     <p align="center"><img src="./visualization/lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></p>
-    - CNN + LSTM + FC: A combination of 1D max-pooled convolutional layers with one succeeding LSTM cell, followed by relu-activated fully connected layers and one softmax output layer.  
+    - CNN + LSTM + FC: A combination of 1D max-pooled convolutional layers with one succeeding LSTM cell, followed by a relu-activated fully-connected layer and a softmax output layer.  
     <p align="center"><img src="./visualization/cnn-lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></p>
 
     We refer to all layers before the fully connected layers as *base layers* or *feature extractors*.
 - **Transfer Learning Models**:
     The idea of transfer learning is to use a pre-trained model on another (preferably large) dataset solving essentially the same task we like to do with a different (usually smaller) dataset. In the case at hand of ECG classification, we use the large MIT-BIH dataset to train a model. Then we used that pre-trained model and retrained it on the much smaller PTBDB dataset. We further differentiate between two methods of training here: *frozen* base layers and *unfrozen* base layers. Frozen base layers refers to not updating the base layers of the pre-trained model, whereas in the unfrozen method we train all layers.
 - **XGBoosted Models**:
-    *Gradient Boosting* has proven many times in the past to be a very effective algorithm for a large variety of machine learning task by winning multiple Kaggle competitions. In this study we compare the performance of fully connected layers and gradient boosting by using the pre-trained base layers are feature extractors and replace the fully connected layers with a gradient boosting model, XGBoost[3].  
-    Further we also examine the transfer learning performance of XGBoost by using a feature extractor trained on the MIT-BIH dataset and training the XGBoost model on the so extracted features from the PTBDB dataset.  
+    *Gradient Boosting* has proven many times in the past to be a very effective algorithm for a large variety of machine learning task by winning multiple Kaggle competitions. In this study we compare the performance of fully connected layers and gradient boosting by using the pre-trained base layers as feature extractors and replace the fully connected layers with a gradient boosting model, XGBoost[3].  
+    Further we also examine the transfer learning performance of XGBoost by using a feature extractor trained on the MIT-BIH dataset and training the XGBoost model on the extracted features from the PTBDB dataset.  
 
 ### **Results**
 
@@ -61,9 +75,11 @@ Performance on test data set:
 
 ### Embedding Visualizations
 
+Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space.
+
 ||t-SNE|UMAP|PCA|  
 |:---:|:---:|:---:|:---:|  
-|**MITBIH**|<img src="visualization/mitbih-tsne-50.png?" width="250">|<img src="visualization/mitbih-umap.png?" width="250">|<img src="visualization/mitbih-pca.png?" width="250">|
+|**MIT-BIH**|<img src="visualization/mitbih-tsne-50.png?" width="250">|<img src="visualization/mitbih-umap.png?" width="250">|<img src="visualization/mitbih-pca.png?" width="250">|
 |**PTBDB**|<img src="visualization/ptbdb-tsne-50.png?" width="250">|<img src="visualization/ptbdb-umap.png?" width="250">|<img src="visualization/ptbdb-pca.png?" width="250">|
 
 ### Reproducibility
@@ -93,5 +109,3 @@ Performance metrics for each model as well as weights, architectures and test se
 [2] CVxTz's GitHub implementation: ECG_Heartbeat_Classification ([link](https://github.com/CVxTz/ECG_Heartbeat_Classification))
 
 [3] XGBoost ([https://github.com/dmlc/xgboost](https://github.com/dmlc/xgboost))
-
-[4] McInnes, L, Healy, J. "UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction." [ArXiv e-prints 1802.03426, 2018](https://arxiv.org/abs/1802.03426).
