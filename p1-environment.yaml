@@ -1,0 +1,15 @@
+name: ml4h-p1-env
+channels:
+  - defaults
+dependencies:
+  - python=3.7
+  - jupyter
+  - pandas=0.25.1
+  - numpy
+  - scikit-learn
+  - keras
+  - matplotlib
+  - xgboost
+  - umap-learn
+prefix: /home/martin/miniconda3/envs/ml4h-p1-env
+

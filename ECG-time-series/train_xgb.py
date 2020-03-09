@@ -2,7 +2,6 @@ import os
 import argparse
 import numpy as np
 from data.make_dataset import load_mitbih, load_ptbdb, upsample
-from models.models import get_feature_extractor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, auc, precision_recall_curve
 from xgboost import XGBClassifier
@@ -31,10 +30,12 @@ def main():
     print("Load data ...")
     if config['dataset'] == 'mitbih':
         train, test, y_train, y_test = load_mitbih()
+        train, test = train[:,:,0], test[:,:,0]
         objective = 'multi:softmax'
         eval_metric = ['merror', 'mlogloss']
     elif config['dataset'] == 'ptbdb':
         train, test, y_train, y_test = load_ptbdb()
+        train, test = train[:,:,0], test[:,:,0]
         objective = 'binary:logistic'
         eval_metric = ['logloss', 'aucpr', 'auc']
     N_CLASSES = len(np.unique(y_train))
@@ -43,8 +44,6 @@ def main():
                                                 stratify=y_train)
 
     ### define model ###
-    feature_extractor = get_feature_extractor(config['base_model_path'],
-                          config['base_weights_path'])
 
     xgb_model = XGBClassifier(max_depth=10,
                               n_estimators=256,
@@ -55,10 +54,8 @@ def main():
                               random_state=42)
 
     print('Start training ...')
-    train_features = feature_extractor.predict(train,verbose=True)
-    val_features = feature_extractor.predict(val,verbose=True)
-    xgb_model.fit(train_features,y_train,
-                  eval_set=[(val_features,y_val)],
+    xgb_model.fit(train,y_train,
+                  eval_set=[(val,y_val)],
                   early_stopping_rounds=3,
                   verbose=True)
     print('Stopped Training.')
@@ -66,10 +63,9 @@ def main():
     xgb_model.save_model(model_path)
 
     ### eval ###
-    test_features = feature_extractor.predict(test,verbose=True)
-    pred_test = xgb_model.predict(test_features)
-    pred_val = xgb_model.predict(val_features)
-    pred_train = xgb_model.predict(train_features)
+    pred_test = xgb_model.predict(test)
+    pred_val = xgb_model.predict(val)
+    pred_train = xgb_model.predict(train)
     try:
         pickle.dump(pred_test,open(f"{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
     except Exception as e:
@@ -96,8 +92,6 @@ def main():
         documents = yaml.dump(res_dict, file)
 
     return 0
-
-
 
 if __name__ == '__main__':
     main()

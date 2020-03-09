@@ -54,6 +54,27 @@ def upsample(data, labels, seed=42):
     labels_upsampled = np.hstack(labels_upsampled)
     return data_upsampled, labels_upsampled
 
+def downsample(data, labels, N_per_class, seed=42):
+    '''
+    Upsample minority classes up to the majority class.
+    Returned data is NOT shuffled.
+    '''
+    CLASSES, N_SAMPLES = np.unique(labels,return_counts=True)
+    data_downsampled = []
+    labels_downsampled = []
+    for c, n in zip(CLASSES, N_SAMPLES):
+        data_sub = data[labels==c]
+        data_sampled = resample(data_sub,
+                                replace=False,
+                                n_samples=N_per_class,
+                                random_state=seed)
+        data_downsampled.append(data_sampled)
+        labels_downsampled.append(np.ones(N_per_class,np.int8)*c)
+
+    data_downsampled = np.vstack(data_downsampled)
+    labels_downsampled = np.hstack(labels_downsampled)
+    return data_downsampled, labels_downsampled
+
 def main():
     print(f"Test upsampling for MITBIH:")
     train, test, y_train, y_test = load_mitbih()
@@ -73,6 +94,26 @@ def main():
     train_upsampled, y_upsampled = upsample(train, y_train)
     print(f"After upsampling:")
     _, NEW_SAMPLES = np.unique(y_upsampled,return_counts=True)
+    print(f"Samples per class: {NEW_SAMPLES}\n\n")
+
+    print(f"Test downsampling for MITBIH:")
+    train, test, y_train, y_test = load_mitbih()
+    print(f"Before downsampling:")
+    CLASSES, N_SAMPLES = np.unique(y_train,return_counts=True)
+    print(f"Classes: {CLASSES},\nsamples per class: {N_SAMPLES}")
+    train_downsampled, y_downsampled = downsample(train, y_train,100)
+    print(f"After downsampling:")
+    _, NEW_SAMPLES = np.unique(y_downsampled,return_counts=True)
+    print(f"Samples per class: {NEW_SAMPLES}\n\n")
+
+    print(f"Test downsampling for PTBDB:")
+    train, test, y_train, y_test = load_ptbdb()
+    print(f"Before downsampling:")
+    CLASSES, N_SAMPLES = np.unique(y_train,return_counts=True)
+    print(f"Classes: {CLASSES},\nsamples per class: {N_SAMPLES}")
+    train_downsampled, y_downsampled = downsample(train, y_train,100)
+    print(f"After downsampling:")
+    _, NEW_SAMPLES = np.unique(y_downsampled,return_counts=True)
     print(f"Samples per class: {NEW_SAMPLES}")
     return 0
 
