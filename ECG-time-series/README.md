@@ -3,16 +3,20 @@ by Martin Tschechne, Han Bai, Nora Moser
 
 ### **Motivation**
 
+<div style="text-align: justify">
 Electrocardiograms (ECG) are a non-invasive, inexpensive quick technique to visualize the heartbeat of a patient and therefore a commonly used method in medicine to discover diseases and malfunctions of the heart, such as rhythm disturbances or inadequate blood flow. Due to the vast availability of ECGs, thanks to wearables and mobile devices, automatically analyzing these becomes more and more important.  
 In contrast to the huge amount of data available, labeling data is still a manual very expensive job which takes human experts hundreds of hours. Often times it is infeasible to label all data. However to reduce overfitting and build well-generalizing machine learning models large amounts of training examples are needed. To overcome this issue *Transfer Learning* becomes a valuable approach. Transfer Learning makes use of a pre-trained model, trained on a large data set to solve a similar tasks with structurally identical data and retraining i.e. fine-tuning this model on the data set of interest. Pre-trained models have already learned low-level features present in both data sets and can therefore be utilized as feature-extractors. Training a new model from scratch becomes unnecessary. This speeds up training and improves generalization of models.
 
+<center>
 
-<p align="center"><img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500"></p>
+|<img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500">|
+|---|
+
+</center>
 
 Above are five examples of different ECG signals, representing different beat patterns (normal and unnormal), taken from the MIT-BIH data set.
 
 ### **Task**
-
 The first task at hand was to train a Recurrent Neural Network model on ECG time signals on two different data sets independently (one multi-class data set and one binary-class data set), in order to classify characteristic beat patterns.  
 Secondly the model from the larger multi-class data set is used as feature-extractor for the smaller binary-class data set and retrained with frozen layers and unfrozen layers. Here the effect of transfer learning on performance metrics such as Accuracy, F1-Score, AUCOR and AUCPR is studied.  
 Further, more sophisticated model architectures such as combinations of Convolutional Neural Networks and LSTM cells or gradient boosting instead of fully-connected layers are tested.
@@ -61,7 +65,7 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 
 ### **Training Protocol**
 
-First the data was split in a stratified fashion into 3 disjunct subsets, training set, validation set and testing set. Where the validation set was used for early-stopping and the testing set for final evaluation of the model. Due to the heavy class imbalance in both datasets (NIR of 0.828 for MIT-BIH and 0.722 of PTBDB) minority classes in the training datasets were upsampled without any data augmentation techniques to the same size of the majority class.  
+First the data was split in a stratified fashion into 3 disjunct subsets, training set, validation set and testing set. Where the validation set was used for early-stopping and the testing set for final evaluation of the model. Due to the heavy class imbalance in both datasets (NIR of 0.828 for MIT-BIH and 0.722 for PTBDB) minority classes in the training datasets were upsampled without any data augmentation techniques to the same size of the majority class.  
 Base models were trained using Adam optimizer with default parameters and clipped gradients. Further a batch-size of 128 was selected. The training was continued until validation loss did not improved anymore for 3 epochs in order to prevent over-fitting. During training of transfer learning models a exponentially decaying learning rate was used starting from the default Adam learning rate.  
 All XGBoost models were trained with the same parameters: `max_depth=10`, `n_estimators=256`,`learning rate=0.1` until no further improvement on the validation data was achieved for 3 epochs.
 
@@ -123,6 +127,7 @@ XGBoosted models and
 to reproduce reference results of pure XGBoost models.
 
 Performance metrics for each model as well as weights, architectures and test set predictions are saved in the `results` folder in a single folder for each model.
+</div>
 
 ### **References**
 
