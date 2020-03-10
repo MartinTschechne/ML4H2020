@@ -59,6 +59,13 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
     *Gradient Boosting* has proven many times in the past to be a very effective algorithm for a large variety of machine learning task by winning multiple Kaggle competitions. In this study we compare the performance of fully connected layers and gradient boosting by using the pre-trained base layers as feature extractors and replace the fully connected layers with a gradient boosting model, XGBoost[3].  
     Further we also examine the transfer learning performance of XGBoost by using a feature extractor trained on the MIT-BIH dataset and training the XGBoost model on the extracted features from the PTBDB dataset.  
 
+### **Training Protocol**
+
+First the data was split in a stratified fashion into 3 disjunct subsets, training set, validation set and testing set. Where the validation set was used for early-stopping and the testing set for final evaluation of the model. Due to the heavy class imbalance in both datasets (NIR of 0.828 for MIT-BIH and 0.722 of PTBDB) minority classes in the training datasets were upsampled without any data augmentation techniques to the same size of the majority class.  
+Base models were trained using Adam optimizer with default parameters and clipped gradients. Further a batch-size of 128 was selected. The training was continued until validation loss did not improved anymore for 3 epochs in order to prevent over-fitting. During training of transfer learning models a exponentially decaying learning rate was used starting from the default Adam learning rate.  
+All XGBoost models were trained with the same parameters: `max_depth=10`, `n_estimators=256`,`learning rate=0.1` until no further improvement on the validation data was achieved for 3 epochs.
+
+
 ### **Results**
 
 MIT-BIH No Information Rate: **0.828**  
@@ -84,7 +91,7 @@ Performance on test data set:
 <sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
 <sup>&Dagger;</sup> Base layers always frozen to train XGBoost
 
-### Embedding Visualizations
+### **Embedding Visualizations**
 
 Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space.
 
@@ -97,7 +104,7 @@ Displayed are the learned embeddings of the base layers from the CNN+LSTM model,
 
 </center>
 
-### Reproducibility
+### **Reproducibility**
 
 To reproduce the results, download the zipped data form the sources mentioned above. Create the folders `data` and `data/raw` inside the project folder. Extract the zip-file inside `data/raw`.
 
@@ -117,7 +124,7 @@ to reproduce reference results of pure XGBoost models.
 
 Performance metrics for each model as well as weights, architectures and test set predictions are saved in the `results` folder in a single folder for each model.
 
-### References
+### **References**
 
 [1] Mohammad Kachuee, Shayan Fazeli, and Majid Sarrafzadeh. "ECG Heartbeat Classification: A Deep Transferable Representation." [arXiv preprint arXiv:1805.00794 (2018) ](https://arxiv.org/abs/1805.00794).
 
