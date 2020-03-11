@@ -5,42 +5,34 @@ by Martin Tschechne, Han Bai, Nora Moser
 
 <div style="text-align: justify">
 Electrocardiograms (ECG) are a non-invasive, inexpensive quick technique to visualize the heartbeat of a patient and therefore a commonly used method in medicine to discover diseases and malfunctions of the heart, such as rhythm disturbances or inadequate blood flow. Due to the vast availability of ECGs, thanks to wearables and mobile devices, automatically analyzing these becomes more and more important.  
-In contrast to the huge amount of data available, labeling data is still a manual very expensive job which takes human experts hundreds of hours. Often times it is infeasible to label all data. However to reduce overfitting and build well-generalizing machine learning models large amounts of training examples are needed. To overcome this issue *Transfer Learning* becomes a valuable approach. Transfer Learning makes use of a pre-trained model, trained on a large data set to solve a similar tasks with structurally identical data and retraining i.e. fine-tuning this model on the data set of interest. Pre-trained models have already learned low-level features present in both data sets and can therefore be utilized as feature-extractors. Training a new model from scratch becomes unnecessary. This speeds up training and improves generalization of models.
+In contrast to the huge amount of data available, labeling data is still a manual very expensive job which takes human experts hundreds of hours. Often times it is infeasible to label all data. However to reduce overfitting and build well-generalizing machine learning models large amounts of training examples are needed. To overcome this issue <i>Transfer Learning</i> becomes a valuable approach. Transfer Learning makes use of a pre-trained model, trained on a large data set to solve a similar tasks with structurally identical data and retraining i.e. fine-tuning this model on the data set of interest. Pre-trained models have already learned low-level features present in both data sets and can therefore be utilized as feature-extractors. Training a new model from scratch becomes unnecessary. This speeds up training and improves generalization of models.
+</div>
 
-<center>
 
-|<img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500">|
-|---|
+</br>
+<p align="center"><img src="./visualization/MITBIH-classes.png" alt="The 5 different classes of the MIT-BIH data" width="500"></p>
 
-</center>
 
 Above are five examples of different ECG signals, representing different beat patterns (normal and unnormal), taken from the MIT-BIH data set.
 
 ### **Task**
+<div style="text-align: justify">
 The first task at hand was to train a Recurrent Neural Network model on ECG time signals on two different data sets independently (one multi-class data set and one binary-class data set), in order to classify characteristic beat patterns.  
 Secondly the model from the larger multi-class data set is used as feature-extractor for the smaller binary-class data set and retrained with frozen layers and unfrozen layers. Here the effect of transfer learning on performance metrics such as Accuracy, F1-Score, AUCOR and AUCPR is studied.  
 Further, more sophisticated model architectures such as combinations of Convolutional Neural Networks and LSTM cells or gradient boosting instead of fully-connected layers are tested.
+</div>
 
 ### **Data**
 
-- **Arrhythmia Dataset**  
-    Number of Samples: 109446  
-    Number of Categories: 5  
-    Sampling Frequency: 125Hz  
-    Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)  
-    Classes: ['N' (Normal):                        0,
-              'S' (Supraventricular ectopic beat): 1,
-              'V' (Ventricular ectopic beat):      2,
-              'F' (Fusion beat):                   3,
-              'Q' (Unknown beat):                  4]
+<center>
 
-- **The PTB Diagnostic ECG Database**  
-    Number of Samples: 14552  
-    Number of Categories: 2  
-    Sampling Frequency: 125Hz  
-    Data Source: [Physionet's PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/)
+|Arrhythmia Dataset|The PTB Diagnostic ECG Database|
+|---|---|
+|Number of Samples: 109446 </br>Number of Categories: 5 </br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)</br>Classes:</br>0: Normal,</br>1: Supraventricular ectopic beat</br>2: Ventricular ectopic beat</br>3: Fusion beat</br>4: Unknown beat|Number of Samples: 14552</br>Number of Categories: 2</br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/)</br>Classes:</br>0: abnormal</br>1: normal</br></br></br></br>|
 
-Remark: All the samples are cropped, downsampled and padded with zeroes if necessary to the fixed dimension of 188.
+</center>
+
+Remark: All the samples are cropped, downsampled and padded with zeros if necessary to the fixed dimension of 188.
 
 ### **Models**
 - **Base Models**:
@@ -52,23 +44,31 @@ Remark: All the samples are cropped, downsampled and padded with zeroes if neces
 
     |LSTM + FC| CNN + LSTM + FC|
     |---|---|
-    |<img src="./visualization/lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200">|<img src="./visualization/cnn-lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200">|
+    |<center><img src="./visualization/lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></center>|<center><img src="./visualization/cnn-lstm.png" alt="The 5 different classes of the MIT-BIH data" width="200"></center>|
 
     </center>
 
     We refer to all layers before the fully connected layers as *base layers* or *feature extractors*.
+
+
 - **Transfer Learning Models**:
-    The idea of transfer learning is to use a pre-trained model on another (preferably large) dataset solving essentially the same task we like to do with a different (usually smaller) dataset. In the case at hand of ECG classification, we use the large MIT-BIH dataset to train a model. Then we used that pre-trained model and retrained it on the much smaller PTBDB dataset. We further differentiate between two methods of training here: *frozen* base layers and *unfrozen* base layers. Frozen base layers refers to not updating the base layers of the pre-trained model, whereas in the unfrozen method we train all layers.
+    <div style="text-align: justify">
+    The idea of transfer learning is to use a pre-trained model on another (preferably large) dataset solving essentially the same task we like to do with a different (usually smaller) dataset. In the case at hand of ECG classification, we use the large MIT-BIH dataset to train a model. Then we used that pre-trained model and retrained it on the much smaller PTBDB dataset. We further differentiate between two methods of training here: <i>frozen</i> base layers and <i>unfrozen</i> base layers. Frozen base layers refers to not updating the base layers of the pre-trained model, whereas in the unfrozen method we train all layers.
+    </div>  
+
+
 - **XGBoosted Models**:
-    *Gradient Boosting* has proven many times in the past to be a very effective algorithm for a large variety of machine learning task by winning multiple Kaggle competitions. In this study we compare the performance of fully connected layers and gradient boosting by using the pre-trained base layers as feature extractors and replace the fully connected layers with a gradient boosting model, XGBoost[3].  
+    <div style="text-align: justify">
+    <i>Gradient Boosting</i> has proven many times in the past to be a very effective algorithm for a large variety of machine learning task by winning multiple Kaggle competitions. In this study we compare the performance of fully connected layers and gradient boosting by using the pre-trained base layers as feature extractors and replace the fully connected layers with a gradient boosting model, XGBoost[3].  
     Further we also examine the transfer learning performance of XGBoost by using a feature extractor trained on the MIT-BIH dataset and training the XGBoost model on the extracted features from the PTBDB dataset.  
+    </div>
 
 ### **Training Protocol**
-
+<div style="text-align: justify">
 First the data was split in a stratified fashion into 3 disjunct subsets, training set, validation set and testing set. Where the validation set was used for early-stopping and the testing set for final evaluation of the model. Due to the heavy class imbalance in both datasets (NIR of 0.828 for MIT-BIH and 0.722 for PTBDB) minority classes in the training datasets were upsampled without any data augmentation techniques to the same size of the majority class.  
 Base models were trained using Adam optimizer with default parameters and clipped gradients. Further a batch-size of 128 was selected. The training was continued until validation loss did not improved anymore for 3 epochs in order to prevent over-fitting. During training of transfer learning models a exponentially decaying learning rate was used starting from the default Adam learning rate.  
-All XGBoost models were trained with the same parameters: `max_depth=10`, `n_estimators=256`,`learning rate=0.1` until no further improvement on the validation data was achieved for 3 epochs.
-
+All XGBoost models were trained with the same parameters: <code>max_depth=10</code>, <code>n_estimators=256</code>, <code>learning rate=0.1</code> until no further improvement on the validation data was achieved for 3 epochs.
+</div>
 
 ### **Results**
 
@@ -96,8 +96,9 @@ Performance on test data set:
 <sup>&Dagger;</sup> Base layers always frozen to train XGBoost
 
 ### **Embedding Visualizations**
-
-Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space.
+<div style="text-align: justify">
+Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space. A subsample of 500 data points for each dataset was selected randomly ina class-balaced way, i.e. each class has the same number of samples.
+</div>
 
 <center>
 

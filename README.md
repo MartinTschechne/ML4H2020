@@ -29,6 +29,8 @@ Results:
 <sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
 <sup>&Dagger;</sup> Base layers always frozen to train XGBoost
 
+Requirements: pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn
+
 ## Project 2 - TBA
 
 ## Project 3 - TBA
