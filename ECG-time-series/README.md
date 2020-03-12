@@ -28,7 +28,7 @@ Further, more sophisticated model architectures such as combinations of Convolut
 
 |Arrhythmia Dataset|The PTB Diagnostic ECG Database|
 |---|---|
-|Number of Samples: 109446 </br>Number of Categories: 5 </br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)</br>Classes:</br>0: Normal,</br>1: Supraventricular ectopic beat</br>2: Ventricular ectopic beat</br>3: Fusion beat</br>4: Unknown beat|Number of Samples: 14552</br>Number of Categories: 2</br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/)</br>Classes:</br>0: abnormal</br>1: normal</br></br></br></br>|
+|Number of Samples: 109446 </br>Number of Categories: 5 </br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/)</br>Classes:</br>0: Normal (82.8%)</br>1: Supraventricular ectopic beat (2.5%) </br>2: Ventricular ectopic beat (6.6%)</br>3: Fusion beat (0.7%)</br>4: Unknown beat (7.3%)|Number of Samples: 14552</br>Number of Categories: 2</br>Sampling Frequency: 125Hz</br>Data Source: [Physionet's PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/)</br>Classes:</br>0: abnormal (27.8%)</br>1: normal (72.2%)</br></br></br></br>|
 
 </center>
 
@@ -79,14 +79,14 @@ Performance on test data set:
 <center>
 
 |Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
-|----------------|:----------------------:|:-----:|:------:|:---:|
-|LSTM + FC    |F1: **0.184**<br>Acc: **0.823**|F1: **0.787** Acc: **0.776**<br>AUROC: **0.808** AUPRC: **0.934**|F1: **0.419** Acc: **0.722**<br>AUROC: **0.5** AUPRC: **0.861**|F1: **0.371** Acc: **0.565**<br>AUROC: **0.397** AUPRC: **0.805**|
-|CNN + LSTM + FC |F1: **0.868**<br>Acc: **0.971**|F1: **0.940** Acc: **0.951**<br>AUROC: **0.947** AUPRC: **0.982**|F1: **0.988** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: **0.992** Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
-|LSTM + XGB<sup>&Dagger;</sup> |F1: **0.875**<br>Acc: **0.976**|F1: **0.971** Acc: **0.977**<br>AUROC: **0.968** AUPRC: **0.988**|F1: **0.963** Acc: **0.970**<br>AUROC: **0.955** AUPRC: **0.983**| - |
-|CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.916**<br>Acc: **0.985**|F1: **0.983** Acc: **0.986**<br>AUROC: **0.980** AUPRC: **0.993**|F1: **0.981** Acc: **0.990**<br>AUROC: **0.977** AUPRC: **0.991**|-|
-|XGB|F1: **0.896**<br>Acc: **0.979**|F1: **0.970** Acc: **0.976**<br>AUROC: **0.966** AUPRC: **0.987**| - | - |
-|Kachuee, et al.[1]|Acc: **0.934**| - |F1: **0.951**<br>Acc: **0.959**| - |
-|Baseline[2]|F1: **0.915**<br>Acc: **0.985**|F1: **0.988**<br>Acc: **0.983**|F1: **0.969**<br>Acc: **0.956**|F1: **0.994**<br>Acc: **0.992**|
+|--------|:-----------:|:-----:|:------:|:---:|
+|LSTM + FC    |F1: 0.184<br>Acc: 0.823|F1: 0.787 Acc: 0.776<br>AUROC: 0.808 AUPRC: 0.934|F1: 0.419 Acc: 0.722<br>AUROC: 0.5 AUPRC: 0.861|F1: 0.371 Acc: 0.565<br>AUROC: 0.397 AUPRC: 0.805|
+|CNN + LSTM + FC |F1: 0.868<br>Acc: 0.971|F1: 0.940 Acc: 0.951<br>AUROC: 0.947 AUPRC: 0.982|F1: **0.988** Acc: **0.990**<br>AUROC: **0.988** AUPRC: **0.996**|F1: 0.992 Acc: **0.994**<br>AUROC: **0.990** AUPRC: **0.996**|
+|LSTM + XGB<sup>&Dagger;</sup> |F1: 0.875<br>Acc: 0.976|F1: 0.971 Acc: 0.977<br>AUROC: 0.968 AUPRC: 0.988|F1: 0.963 Acc: 0.970<br>AUROC: 0.955 AUPRC: 0.983| - |
+|CNN + LSTM + XGB<sup>&Dagger;</sup>|F1: **0.916**<br>Acc: **0.985**|F1: 0.983 Acc: **0.986**<br>AUROC: **0.980** AUPRC: **0.993**|F1: 0.981 Acc: **0.990**<br>AUROC: 0.977 AUPRC: 0.991|-|
+|XGB|F1: 0.896<br>Acc: 0.979|F1: 0.970 Acc: 0.976<br>AUROC: 0.966 AUPRC: 0.987| - | - |
+|Kachuee, et al.[1]|Acc: 0.934| - |F1: 0.951<br>Acc: 0.959| - |
+|Baseline[2]|F1: 0.915<br>Acc: 0.985|F1: **0.988**<br>Acc: 0.983|F1: 0.969<br>Acc: 0.956|F1: **0.994**<br>Acc: 0.992|
 
 </center>
 
@@ -97,7 +97,7 @@ Performance on test data set:
 
 ### **Embedding Visualizations**
 <div style="text-align: justify">
-Displayed are the learned embeddings of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space. A subsample of 500 data points for each dataset was selected randomly ina class-balaced way, i.e. each class has the same number of samples.
+Displayed are the learned representations of the base layers from the CNN+LSTM model, i.e. best performing model, trained on the MIT-BIH data mapped into 2 dimensions. Here used three famous dimension reduction algorithms, t-distributed Stochastic Neighbor Embedding (t-SNE), Uniform Manifold Approximation (UMAP) and Principal Component Analysis (PCA) to map the 5632-dimensional embedding into a 2-dimensional space. A subsample of 500 data points for each dataset was selected randomly ina class-balaced way, i.e. each class has the same number of samples.
 </div>
 
 <center>
@@ -128,7 +128,6 @@ XGBoosted models and
 to reproduce reference results of pure XGBoost models.
 
 Performance metrics for each model as well as weights, architectures and test set predictions are saved in the `results` folder in a single folder for each model.
-</div>
 
 ### **References**
 
@@ -136,4 +135,4 @@ Performance metrics for each model as well as weights, architectures and test se
 
 [2] CVxTz's GitHub implementation: ECG_Heartbeat_Classification ([link](https://github.com/CVxTz/ECG_Heartbeat_Classification))
 
-[3] XGBoost ([https://github.com/dmlc/xgboost](https://github.com/dmlc/xgboost))
+[3] XGBoost ([link](https://github.com/dmlc/xgboost))

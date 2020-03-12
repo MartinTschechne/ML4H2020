@@ -12,7 +12,7 @@ Martin Tschechne (martints@ethz.ch)
 ## Project 1 - ECG Time Series
 Classifying ECG signals of the [MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/) and the [PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/) by Recurrent Neural Networks and make use of Transfer Learning techniques in order to improve predictive performance. Finally compare models performance to the results obtained by Kachuee, et al.[1]
 
-Results:
+**Results**
 
 |Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
 |----------------|:----------------------:|:-----:|:------:|:---:|
@@ -28,6 +28,16 @@ Results:
 <sup>°</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **frozen** base layers  
 <sup>&dagger;</sup> Transfer Learning, pre-trained model trained on MIT-BIH, retrained with **unfrozen** base layers  
 <sup>&Dagger;</sup> Base layers always frozen to train XGBoost
+
+**Visualization of learned embeddings**
+<center>
+
+||t-SNE|UMAP|PCA|  
+|:---:|:---:|:---:|:---:|  
+|**MIT-BIH**|<img src="ECG-time-series/visualization/mitbih-tsne-50.png?" width="250">|<img src="ECG-time-series/visualization/mitbih-umap.png?" width="250">|<img src="ECG-time-series/visualization/mitbih-pca.png?" width="250">|
+|**PTBDB**|<img src="ECG-time-series/visualization/ptbdb-tsne-50.png?" width="250">|<img src="ECG-time-series/visualization/ptbdb-umap.png?" width="250">|<img src="ECG-time-series/visualization/ptbdb-pca.png?" width="250">|
+
+</center>
 
 Requirements: pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn
 
