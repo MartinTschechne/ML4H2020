@@ -88,5 +88,13 @@ target/
 # Mypy cache
 .mypy_cache/
 
-#
+# exclude report.md
 report.md
+
+# exclude zipped.files
+*.zip
+*.tar
+*.tar.gz
+
+# exclude submit folder
+/ML4H-Project-1-ECG-time-series/
