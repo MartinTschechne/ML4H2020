@@ -41,13 +41,37 @@ For more details about the project have a look at the `README.md` in the project
 
 </center>
 
-Requirements: pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn
-
 ## Project 2 - Diabetes Readmission Prediction
+
+Investigating which medical features from patient records (categorical, numerical and text) play an important role in the prediction of patient readmission. Comparing models using only numerical + categorical features, only text and both.  
+
+For more details about the project have a look at the `README.md` in the project directory `/Diabetes-readmission`.
+
+
+**Results** 
+
+<center>
+
+|Cat./Num. Features|
+|---|
+|<img src="./Diabetes-readmission/visualization/num-cat-feature-importance.png" width="700">|
+
+</center>
+
+<center>
+
+|Text Features|
+|---|
+|<img src="./Diabetes-readmission/visualization/text-feature-importance.png" width="700">|
+
+</center>
 
 ## Project 3 - TBA
 
 ## Project 4 - TBA
+
+### Requirements  
+pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn
 
 ### References
 
@@ -55,8 +79,11 @@ Requirements: pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-lear
 
 [2] CVxTz's GitHub implementation: ECG_Heartbeat_Classification ([link](https://github.com/CVxTz/ECG_Heartbeat_Classification))
 
+[3] Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical Database Patient Records. [https://doi.org/10.1155/2014/781670](https://doi.org/10.1155/2014/781670)
+
 Project Organization
 ------------
+For this repository the cookiecuter data science project template is used slightly adapted to the our needs and requirements. Each of the four projects is in a separate folder which is a copy of the `src` directory.
 
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
