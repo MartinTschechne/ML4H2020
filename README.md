@@ -48,7 +48,7 @@ Investigating which medical features from patient records (categorical, numerica
 For more details about the project have a look at the `README.md` in the project directory `/Diabetes-readmission`.
 
 
-**Results** 
+**Results**
 
 <center>
 
@@ -66,7 +66,7 @@ For more details about the project have a look at the `README.md` in the project
 
 </center>
 
-## Project 3 - TBA
+## Project 3 - Image Segmentation
 
 ## Project 4 - TBA
 
