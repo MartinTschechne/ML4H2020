@@ -1,4 +1,6 @@
 import math
+from keras.losses import sparse_categorical_crossentropy
+from keras_contrib.losses.jaccard import jaccard_distance
 from keras.models import Model
 from keras.layers import (Input,
                          Conv2D,
@@ -70,6 +72,14 @@ class UNET():
         output = Conv2D(n_filters,self.kernel_size,activation='relu',padding='same')(output)
         output = Conv2DTranspose(n_filters//2,self.kernel_size,strides=(2,2),padding='same')(output)
         return output
+
+def make_Jaccard_XEntropy_Loss(alpha=0.5):
+    def JX_Loss(y_true,y_pred):
+        xe_loss = sparse_categorical_crossentropy(y_true,y_pred)
+        jac_dis = jaccard_distance(y_true,y_pred)
+        return alpha*jac_dis + (1.-alpha)*xe_loss
+    return JX_Loss
+
 
 def main():
     unet = UNET((256,256,1),3,[64,128,256,512],3)
