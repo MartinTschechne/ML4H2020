@@ -1,17 +1,17 @@
-experiment_name: debug
+experiment_name: JAC-XE-noBN
 seed: 42
-augmentation: True
+augmentation: False
 rot_range: 45
 zoom_range: 0.2
 batch_size: 1
-filter_list: [4,8,16,32]
+filter_list: [64,128,256,512]
 kernel_size: 3
 batch_norm: False
-epochs: 5
-patience: 2
+epochs: 300
+patience: 10
 loss: jaccard-xentropy
 alpha: 0.5
 optimizer: 'adam'
 lr: 'default'
-lr_scheduler: True
+lr_scheduler: False
 class_weights: [1., 1., 1.]

@@ -77,10 +77,10 @@ def main():
     checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
-    lr_schuduler = LearningRateScheduler(exp_decay,verbose=1)
+    lr_scheduler = LearningRateScheduler(exp_decay,verbose=1)
     callbacks_list = [checkpoint, early, csv_logger]
-    if config['lr_schuduler']:
-        callbacks_list.append(lr_schuduler)
+    if config['lr_scheduler']:
+        callbacks_list.append(lr_scheduler)
 
     print('Start training ...')
     history = unet.model.fit_generator(train_generator,
@@ -109,13 +109,13 @@ def main():
     y_train = y_train.flatten()
 
     print(classification_report(y_val, pred_val))
-    print(confusion_matrix(y_val,pred_val,normalize=True))
+    print(confusion_matrix(y_val,pred_val,normalize='true'))
 
     report_dict = {'val-data':classification_report(y_val,pred_val,output_dict=True),
                     'train-data':classification_report(y_train,pred_train,output_dict=True),
                     'val-jaccard-score': jaccard_score(y_val,pred_val,average='micro'),
                     'train-jaccard-score': jaccard_score(y_train,pred_train,average='micro')}
-    confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val,normalize=True).tolist()}
+    confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val,normalize='true').tolist()}
     res_dict = {**report_dict, **confmat_dict}
     with open(f'{dirName}/eval.yaml', 'w') as file:
         documents = yaml.dump(res_dict, file)
