@@ -9,7 +9,7 @@ from keras.layers import (Input,
                          Conv2DTranspose,
                          Concatenate,
                          Cropping2D,
-                         UpSampling2D)
+                         BatchNormalization)
 
 class UNET():
 
@@ -18,6 +18,7 @@ class UNET():
                  num_classes,
                  filter_list,
                  kernel_size,
+                 batch_norm=False,
                  initializer='glorot_uniform'):
         '''
         UNET model
@@ -27,6 +28,7 @@ class UNET():
         self.filter_list = filter_list
         self.kernel_size = kernel_size
         self.num_passes = len(self.filter_list)
+        self.batch_norm = batch_norm
         self.initializer = initializer
         self.copies = list()
 
@@ -56,12 +58,16 @@ class UNET():
         output = Conv2D(n_filters,self.kernel_size,activation='relu',padding='same')(input)
         output = Conv2D(n_filters,self.kernel_size,activation='relu',padding='same')(output)
         copy = output#Cropping2D(cropping=(4,4))(output)
+        if self.batch_norm:
+            output = BatchNormalization()(output)
         output = MaxPooling2D()(output)
         return output, copy
 
     def up_pass(self,input,copy,n_filters, last=False):
         '''Up pass'''
         output = Concatenate(axis=-1)([input,copy])
+        if self.batch_norm:
+            output = BatchNormalization()(output)
         output = Conv2D(n_filters,self.kernel_size,activation='relu',padding='same')(output)
         output = Conv2D(n_filters,self.kernel_size,activation='relu',padding='same')(output)
         if not last:

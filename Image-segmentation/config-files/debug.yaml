@@ -1,0 +1,17 @@
+experiment_name: debug
+seed: 42
+augmentation: True
+rot_range: 45
+zoom_range: 0.2
+batch_size: 1
+filter_list: [4,8,16,32]
+kernel_size: 3
+batch_norm: False
+epochs: 5
+patience: 2
+loss: jaccard-xentropy
+alpha: 0.9
+optimizer: 'adam'
+lr: 'default'
+lr_schuduler: True
+class_weights: [1., 1., 1.]

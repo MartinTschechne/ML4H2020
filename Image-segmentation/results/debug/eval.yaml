@@ -1,0 +1,85 @@
+train-data:
+  '0':
+    f1-score: 0.7098789933372668
+    precision: 0.9084682307595439
+    recall: 0.5825375210102058
+    support: 41027680
+  '1':
+    f1-score: 0.0059359073854064305
+    precision: 0.006772541172761575
+    recall: 0.0052832504675050735
+    support: 902664
+  '2':
+    f1-score: 0.029493837591889827
+    precision: 0.016423232115465442
+    recall: 0.1444789989755598
+    support: 1913240
+  accuracy: 0.5515369135880862
+  macro avg:
+    f1-score: 0.24843624610485435
+    precision: 0.31055466801592363
+    recall: 0.24409992348442358
+    support: 43843584
+  weighted avg:
+    f1-score: 0.6656954663446757
+    precision: 0.8509769359978985
+    recall: 0.5515369135880863
+    support: 43843584
+train-jaccard-score: !!python/object/apply:numpy.core.multiarray.scalar
+- &id001 !!python/object/apply:numpy.dtype
+  args:
+  - f8
+  - 0
+  - 1
+  state: !!python/tuple
+  - 3
+  - <
+  - null
+  - null
+  - null
+  - -1
+  - -1
+  - 0
+- !!binary |
+  bauCa5le2D8=
+val-confusion_matrix:
+- - 6309827
+  - 175757
+  - 4142286
+- - 188231
+  - 1363
+  - 33064
+- - 426442
+  - 2363
+  - 58395
+val-data:
+  '0':
+    f1-score: 0.7189715121091909
+    precision: 0.9112321467253953
+    recall: 0.5937057002014514
+    support: 10627870
+  '1':
+    f1-score: 0.006778716917698021
+    precision: 0.007594033975362569
+    recall: 0.006121495746840446
+    support: 222658
+  '2':
+    f1-score: 0.024738691088330832
+    precision: 0.013792753224391172
+    recall: 0.11985837438423645
+    support: 487200
+  accuracy: 0.5618043579807172
+  macro avg:
+    f1-score: 0.2501629733717399
+    precision: 0.3108729779750497
+    recall: 0.23989519011084273
+    support: 11337728
+  weighted avg:
+    f1-score: 0.6751527105121593
+    precision: 0.8549215060553786
+    recall: 0.561804357980717
+    support: 11337728
+val-jaccard-score: !!python/object/apply:numpy.core.multiarray.scalar
+- *id001
+- !!binary |
+  hVupyRoA2T8=
