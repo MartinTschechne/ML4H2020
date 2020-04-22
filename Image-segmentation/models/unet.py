@@ -1,5 +1,6 @@
 import math
-from keras.losses import sparse_categorical_crossentropy
+from keras.losses import categorical_crossentropy
+from keras.backend import reshape
 from keras_contrib.losses.jaccard import jaccard_distance
 from keras.models import Model
 from keras.layers import (Input,
@@ -75,7 +76,7 @@ class UNET():
 
 def make_Jaccard_XEntropy_Loss(alpha=0.5):
     def JX_Loss(y_true,y_pred):
-        xe_loss = sparse_categorical_crossentropy(y_true,y_pred)
+        xe_loss = categorical_crossentropy(y_true,y_pred)
         jac_dis = jaccard_distance(y_true,y_pred)
         return alpha*jac_dis + (1.-alpha)*xe_loss
     return JX_Loss
