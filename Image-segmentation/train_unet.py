@@ -109,13 +109,14 @@ def main():
     y_train = y_train.flatten()
 
     print(classification_report(y_val, pred_val))
-    print(confusion_matrix(y_val,pred_val,normalize='true'))
+    print(confusion_matrix(y_val,pred_val))
+    print(jaccard_score(y_val,pred_val,average='micro'))
 
     report_dict = {'val-data':classification_report(y_val,pred_val,output_dict=True),
                     'train-data':classification_report(y_train,pred_train,output_dict=True),
                     'val-jaccard-score': jaccard_score(y_val,pred_val,average='micro'),
                     'train-jaccard-score': jaccard_score(y_train,pred_train,average='micro')}
-    confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val,normalize='true').tolist()}
+    confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val).tolist()}
     res_dict = {**report_dict, **confmat_dict}
     with open(f'{dirName}/eval.yaml', 'w') as file:
         documents = yaml.dump(res_dict, file)
