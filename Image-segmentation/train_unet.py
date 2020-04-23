@@ -90,6 +90,8 @@ def main():
         class_weights = compute_class_weight('balanced',np.unique(y_train),y_train.flatten())
     elif config['class_weights'] == 'weighted':
         class_weights = [1., 100., 10.]
+    elif config['class_weights'] == 'heavy-weighted':
+        class_weights = [1., 1000., 100.]
     else:
         class_weights = [1., 1., 1.]
 
