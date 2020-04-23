@@ -82,11 +82,16 @@ def main():
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
 
+    if config['class_weights'] == 'balanced':
+        class_weights = compute_class_weight('balanced',np.unique(y_train),y_train.flatten())
+    else:
+        class_weights = [1., 1., 1.]
+
     print('Start training ...')
     history = unet.model.fit_generator(train_generator,
                         steps_per_epoch=len(train),
                         epochs=config['epochs'],
-                        class_weight=config['class_weights'],
+                        class_weight=class_weights,
                         shuffle=True,
                         validation_data = (val,to_categorical(y_val,3)),
                         callbacks=callbacks_list,
