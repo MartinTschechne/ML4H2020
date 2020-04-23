@@ -78,7 +78,7 @@ def main():
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = LearningRateScheduler(exp_decay,verbose=1)
-    callbacks_list = [early, csv_logger]
+    callbacks_list = [checkpoint, early, csv_logger]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
 
