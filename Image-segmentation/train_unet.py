@@ -29,6 +29,9 @@ def main():
             config = yaml.safe_load(file)
     except Exception as e:
         print('Error reading the config file')
+    print("Configuration:")
+    for k,v in config.items():
+        print(k,':',v)
 
     dirName = './results/'+config['experiment_name']
     if not os.path.exists(dirName):
@@ -43,6 +46,7 @@ def main():
     if config['augmentation']:
         data_gen_args = dict(rotation_range=config['rot_range'],
                              zoom_range=config['zoom_range'],
+                             vertical_flip=config['vertical_flip']
                              fill_mode='reflect')
     else:
         data_gen_args = dict(rotation_range=0.,
@@ -119,8 +123,8 @@ def main():
 
     report_dict = {'val-data':classification_report(y_val,pred_val,output_dict=True),
                     'train-data':classification_report(y_train,pred_train,output_dict=True),
-                    'val-jaccard-score': jaccard_score(y_val,pred_val,average='micro'),
-                    'train-jaccard-score': jaccard_score(y_train,pred_train,average='micro')}
+                    'val-jaccard-score': jaccard_score(y_val,pred_val,average='micro').item(),
+                    'train-jaccard-score': jaccard_score(y_train,pred_train,average='micro').item()}
     confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val).tolist()}
     res_dict = {**report_dict, **confmat_dict}
     with open(f'{dirName}/eval.yaml', 'w') as file:
@@ -143,6 +147,8 @@ def get_optimizer(config):
             return optimizers.Adam()
         else:
             return optimizers.Adam(lr=config['lr'])
+    if config['optimizer'] == 'sgd':
+        return optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
 def exp_decay(epoch):
    initial_lrate = 1e-3

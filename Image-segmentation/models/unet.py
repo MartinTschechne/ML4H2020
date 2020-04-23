@@ -36,7 +36,7 @@ class UNET():
         # model
         input = Input(shape=self.input_shape)
         # down
-        x = input
+        x = BatchNormalization()(input)
         for f in self.filter_list:
             x, copy = self.down_pass(x,f)
             self.copies.append(copy)
