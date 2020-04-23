@@ -14,7 +14,7 @@ from keras.utils import to_categorical
 from keras import optimizers
 from keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger, LearningRateScheduler
 
-from models.unet import UNET, make_Jaccard_XEntropy_Loss
+from models.unet import UNET, Jaccard_XEntropy_Loss, Focal_Loss
 from data.make_dataset import load_train_images
 
 from keras_contrib.losses.jaccard import jaccard_distance
@@ -62,7 +62,7 @@ def main():
     unet = UNET(INPUT_SHAPE, N_CLASSES,
                 config['filter_list'], config['kernel_size'], config['batch_norm'])
 
-    unet.model.save(f"{dirName}/{config['experiment_name']}.h5")
+    # unet.model.save(f"{dirName}/{config['experiment_name']}.h5")
 
     model_yaml = unet.model.to_yaml()
     with open(f"{dirName}/{config['experiment_name']}.yaml", "w") as yaml_file:
@@ -78,7 +78,7 @@ def main():
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = LearningRateScheduler(exp_decay,verbose=1)
-    callbacks_list = [checkpoint, early, csv_logger]
+    callbacks_list = [early, csv_logger]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
 
@@ -128,7 +128,9 @@ def get_loss(config):
     elif config['loss'] == 'jaccard':
         return jaccard_distance
     elif config['loss'] == 'jaccard-xentropy':
-        return make_Jaccard_XEntropy_Loss(config['alpha'])
+        return Jaccard_XEntropy_Loss(config['alpha'])
+    elif config['loss'] == 'focal':
+        return Focal_Loss()
 
 def get_optimizer(config):
     if config['optimizer'] == 'adam':

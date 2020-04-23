@@ -10,6 +10,7 @@ from keras.layers import (Input,
                          Concatenate,
                          Cropping2D,
                          BatchNormalization)
+import keras.backend as K
 
 class UNET():
 
@@ -80,12 +81,23 @@ class UNET():
         output = Conv2DTranspose(n_filters//2,self.kernel_size,strides=(2,2),padding='same')(output)
         return output
 
-def make_Jaccard_XEntropy_Loss(alpha=0.5):
+def Jaccard_XEntropy_Loss(alpha=0.5):
     def JX_Loss(y_true,y_pred):
         xe_loss = categorical_crossentropy(y_true,y_pred)
         jac_dis = jaccard_distance(y_true,y_pred)
         return alpha*jac_dis + (1.-alpha)*xe_loss
     return JX_Loss
+
+def Focal_Loss(gamma=2, alpha=.25):
+    def categorical_focal_loss_fixed(y_true, y_pred):
+        y_pred /= K.sum(y_pred, axis=-1, keepdims=True)
+        epsilon = K.epsilon()
+        y_pred = K.clip(y_pred, epsilon, 1. - epsilon)
+        cross_entropy = -y_true * K.log(y_pred)
+        loss = alpha * K.pow(1 - y_pred, gamma) * cross_entropy
+        return K.mean(loss, axis=1)
+
+    return categorical_focal_loss_fixed
 
 
 def main():
