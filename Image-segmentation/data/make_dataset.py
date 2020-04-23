@@ -2,6 +2,7 @@ import glob
 import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
+import pickle
 
 def load_train_images(val_size=0.2):
     label_path = '../data/raw/data/train_labels/*.npy'
@@ -47,7 +48,8 @@ def load_test_images(rotated=False):
 def main():
     train, val, y_train, y_val = load_train_images()
     test = load_test_images(True)
-    breakpoint()
+    pickle.dump(val, open('../data/processed/val.pkl','wb'))
+    pickle.dump(y_val, open('../data/processed/y_val.pkl','wb'))
 
 if __name__ == '__main__':
     main()
