@@ -46,7 +46,7 @@ def main():
     if config['augmentation']:
         data_gen_args = dict(rotation_range=config['rot_range'],
                              zoom_range=config['zoom_range'],
-                             vertical_flip=config['vertical_flip']
+                             vertical_flip=config['vertical_flip'],
                              fill_mode='reflect')
     else:
         data_gen_args = dict(rotation_range=0.,
@@ -88,12 +88,14 @@ def main():
 
     if config['class_weights'] == 'balanced':
         class_weights = compute_class_weight('balanced',np.unique(y_train),y_train.flatten())
+    elif config['class_weights'] == 'weighted':
+        class_weights = [1., 100., 10.]
     else:
         class_weights = [1., 1., 1.]
 
     print('Start training ...')
     history = unet.model.fit_generator(train_generator,
-                        steps_per_epoch=len(train),
+                        steps_per_epoch=len(train)//config['batch_size'],
                         epochs=config['epochs'],
                         class_weight=class_weights,
                         shuffle=True,
@@ -109,6 +111,7 @@ def main():
     pred_train = unet.model.predict(train,verbose=True).argmax(-1)
     try:
         pickle.dump(pred_val,open(f"{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
+        pickle.dump(y_val,open(f"{dirName}/{config['experiment_name']}-labels.pkl",'wb'))
     except Exception as e:
         print(e)
 
