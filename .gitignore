@@ -102,3 +102,7 @@ report.md
 
 # exclude predictions
 *-preds.pkl
+
+# exclude val
+/Image-segmentation/results/val.pkl
+/Image-segmentation/results/y_val.pkl

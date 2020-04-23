@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import pickle
 
-def load_train_images(val_size=0.2):
+def generate_train_val_images(val_size=0.2):
     label_path = '../data/raw/data/train_labels/*.npy'
     data_path = '../data/raw/data/train_images/*.npy'
     images = glob.glob(data_path)
@@ -21,7 +21,8 @@ def load_train_images(val_size=0.2):
         y_train.append(label)
     X_train, X_val, y_train, y_val = train_test_split(X_train, y_train,
                                                       test_size=val_size,
-                                                      random_state=42)
+                                                      random_state=42,
+                                                      shuffle=False)
     X_train = np.concatenate(X_train,axis=0)
     X_val = np.concatenate(X_val,axis=0)
     y_train = np.concatenate(y_train,axis=0)
@@ -45,11 +46,20 @@ def load_test_images(rotated=False):
     X_test = np.concatenate(X_test,axis=0)
     return X_test
 
+def load_train_images():
+    train = pickle.load(open('../data/processed/train.pkl','rb'))
+    val = pickle.load(open('../data/processed/val.pkl','rb'))
+    y_train = pickle.load(open('../data/processed/y_train.pkl','rb'))
+    y_val = pickle.load(open('../data/processed/y_val.pkl','rb'))
+    return train, val, y_train, y_val
+
 def main():
-    train, val, y_train, y_val = load_train_images()
-    test = load_test_images(True)
+    train, val, y_train, y_val = generate_train_val_images()
+    #test = load_test_images(True)
     pickle.dump(val, open('../data/processed/val.pkl','wb'))
     pickle.dump(y_val, open('../data/processed/y_val.pkl','wb'))
+    pickle.dump(train, open('../data/processed/train.pkl','wb'))
+    pickle.dump(y_train, open('../data/processed/y_train.pkl','wb'))
 
 if __name__ == '__main__':
     main()

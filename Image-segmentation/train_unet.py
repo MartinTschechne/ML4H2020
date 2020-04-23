@@ -111,7 +111,6 @@ def main():
     pred_train = unet.model.predict(train,verbose=True).argmax(-1)
     try:
         pickle.dump(pred_val,open(f"{dirName}/{config['experiment_name']}-preds.pkl",'wb'))
-        # pickle.dump(y_val,open(f"{dirName}/{config['experiment_name']}-labels.pkl",'wb'))
     except Exception as e:
         print(e)
 
