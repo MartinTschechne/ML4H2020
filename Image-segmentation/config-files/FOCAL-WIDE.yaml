@@ -1,0 +1,20 @@
+experiment_name: FOC-WIDE
+seed: 42
+augmentation: False
+rot_range: 45
+vertical_flip: True
+zoom_range: 0.2
+batch_size: 4
+model:
+  filter_list: [256,512,1024]
+  kernel_size: 3
+  dropout: True
+  batch_norm: True
+epochs: 100
+patience: 10
+loss: focal
+alpha: 0.5
+optimizer: 'adam'
+lr: 0.0003
+lr_scheduler: False
+class_weights: 'heavy-weighted'

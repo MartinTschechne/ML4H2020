@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 import pickle
 import yaml
+import time
 
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import (confusion_matrix,
@@ -63,8 +64,10 @@ def main():
     N_CLASSES = 3
     INPUT_SHAPE = (256,256,1)
 
-    unet = UNET(INPUT_SHAPE, N_CLASSES,
-                config['filter_list'], config['kernel_size'], config['batch_norm'])
+    unet = UNET(input_shape = INPUT_SHAPE,
+                num_classes = N_CLASSES,
+                seed = SEED,
+                **config['model'])
 
     # unet.model.save(f"{dirName}/{config['experiment_name']}.h5")
 
@@ -81,7 +84,7 @@ def main():
     checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
     early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
-    lr_scheduler = LearningRateScheduler(exp_decay,verbose=1)
+    lr_scheduler = LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
     callbacks_list = [checkpoint, early, csv_logger]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
@@ -96,6 +99,7 @@ def main():
         class_weights = [1., 1., 1.]
 
     print('Start training ...')
+    start = time.time()
     history = unet.model.fit_generator(train_generator,
                         steps_per_epoch=len(train)//config['batch_size'],
                         epochs=config['epochs'],
@@ -104,7 +108,10 @@ def main():
                         validation_data = (val,to_categorical(y_val,3)),
                         callbacks=callbacks_list,
                         use_multiprocessing=True)
+    end = time.time()
     print('Stopped Training.')
+    dt = int(end-start)
+    print(f"Training took {dt//3600} h {(dt%3600)//60} min {dt%60} sec")
 
     ### evaluation ###
     print("Evaluation:")
@@ -154,11 +161,12 @@ def get_optimizer(config):
     if config['optimizer'] == 'sgd':
         return optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 
-def exp_decay(epoch):
-   initial_lrate = 1e-3
-   k = 0.1
-   lrate = initial_lrate * np.exp(-k*epoch)
-   return lrate
+def lr_schedule(initial_lrate):
+    def exp_decay(epoch):
+       k = 0.1
+       lrate = initial_lrate * np.exp(-k*epoch)
+       return lrate
+   return exp_decay
 
 if __name__ == '__main__':
     main()
