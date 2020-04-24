@@ -130,12 +130,12 @@ def main():
 
     print(classification_report(y_val, pred_val))
     print(confusion_matrix(y_val,pred_val))
-    print(jaccard_score(y_val,pred_val,average='micro'))
+    print(jaccard_score(y_val,pred_val,average='macro'))
 
     report_dict = {'val-data':classification_report(y_val,pred_val,output_dict=True),
                     'train-data':classification_report(y_train,pred_train,output_dict=True),
-                    'val-jaccard-score': jaccard_score(y_val,pred_val,average='micro').item(),
-                    'train-jaccard-score': jaccard_score(y_train,pred_train,average='micro').item()}
+                    'val-jaccard-score': jaccard_score(y_val,pred_val,average='macro').item(),
+                    'train-jaccard-score': jaccard_score(y_train,pred_train,average='macro').item()}
     confmat_dict = {'val-confusion_matrix':confusion_matrix(y_val, pred_val).tolist()}
     res_dict = {**report_dict, **confmat_dict}
     with open(f'{dirName}/eval.yaml', 'w') as file:
