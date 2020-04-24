@@ -1,0 +1,66 @@
+train-data:
+  '0':
+    f1-score: 0.9483199644058293
+    precision: 0.9717876068512754
+    recall: 0.9259590335147034
+    support: 40786218
+  '1':
+    f1-score: 0.00038227918761328555
+    precision: 0.11916046039268788
+    recall: 0.0001914466842739602
+    support: 919316
+  '2':
+    f1-score: 0.32849119268934257
+    precision: 0.22816816749676674
+    recall: 0.5862657909709065
+    support: 1810370
+  accuracy: 0.8922692034617964
+  macro avg:
+    f1-score: 0.425731145427595
+    precision: 0.4397054115802434
+    recall: 0.5041387570566279
+    support: 43515904
+  weighted avg:
+    f1-score: 0.902507433555581
+    precision: 0.9228386041556645
+    recall: 0.8922692034617964
+    support: 43515904
+train-jaccard-score: 0.8054928203226348
+val-confusion_matrix:
+- - 10450480
+  - 35
+  - 418817
+- - 128753
+  - 0
+  - 77253
+- - 326841
+  - 0
+  - 263229
+val-data:
+  '0':
+    f1-score: 0.9598424938667044
+    precision: 0.9582256639740386
+    recall: 0.9614647891885169
+    support: 10869332
+  '1':
+    f1-score: 0.0
+    precision: 0.0
+    recall: 0.0
+    support: 206006
+  '2':
+    f1-score: 0.39015124847243415
+    precision: 0.3466737082493194
+    recall: 0.4460979205856932
+    support: 590070
+  accuracy: 0.9184169983595944
+  macro avg:
+    f1-score: 0.4499979141130462
+    precision: 0.43496645740778606
+    recall: 0.4691875699247367
+    support: 11665408
+  weighted avg:
+    f1-score: 0.9140754683189222
+    precision: 0.9103697554068354
+    recall: 0.9184169983595944
+    support: 11665408
+val-jaccard-score: 0.8491414870302677
