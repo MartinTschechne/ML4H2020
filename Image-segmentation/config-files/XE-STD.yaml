@@ -8,7 +8,7 @@ batch_size: 4
 model:
   filter_list: [64,128,256,512]
   kernel_size: 3
-  dropout: True
+  dropout: False
   batch_norm: True
 epochs: 100
 patience: 10

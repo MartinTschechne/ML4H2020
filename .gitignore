@@ -104,5 +104,8 @@ report.md
 *-preds.pkl
 
 # exclude val
-/Image-segmentation/results/val.pkl
-/Image-segmentation/results/y_val.pkl
+/Image-segmentation/results/cluster_val.pkl
+/Image-segmentation/results/cluster_y_val.pkl
+
+# exclude debug
+/Image-segmentation/results/debug/

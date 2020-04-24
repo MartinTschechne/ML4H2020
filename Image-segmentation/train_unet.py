@@ -166,7 +166,7 @@ def lr_schedule(initial_lrate):
        k = 0.1
        lrate = initial_lrate * np.exp(-k*epoch)
        return lrate
-   return exp_decay
+    return exp_decay
 
 if __name__ == '__main__':
     main()
