@@ -1,0 +1,20 @@
+experiment_name: FOC-DEEP-7
+seed: 42
+augmentation: False
+rot_range: 45
+vertical_flip: True
+zoom_range: 0.2
+batch_size: 4
+model:
+  filter_list: [16,32,64,128,256,512]
+  kernel_size: 7
+  dropout: False
+  batch_norm: True
+epochs: 100
+patience: 10
+loss: focal
+alpha: 0.5
+optimizer: 'adam'
+lr: 0.0003
+lr_scheduler: False
+class_weights: 'heavy-weighted'
