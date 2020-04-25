@@ -1,6 +1,6 @@
 experiment_name: debug
 seed: 42
-augmentation: True
+augmentation: False
 rot_range: 45
 vertical_flip: True
 zoom_range: 0.2
@@ -12,7 +12,7 @@ epochs: 5
 patience: 2
 loss: focal
 alpha: 0.5
-optimizer: 'adam'
+optimizer: 'lookahead'
 lr: 0.0003
-lr_scheduler: True
+lr_scheduler: False
 class_weights: 'balanced'

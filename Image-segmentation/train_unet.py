@@ -10,15 +10,17 @@ from sklearn.metrics import (confusion_matrix,
                              classification_report,
                              jaccard_score)
 
+import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import to_categorical
 from keras import optimizers
-from keras.callbacks import ModelCheckpoint, EarlyStopping, CSVLogger, LearningRateScheduler
+from keras import callbacks
 
 from models.unet import UNET, Jaccard_XEntropy_Loss, Focal_Loss
 from data.make_dataset import load_train_images
 
 from keras_contrib.losses.jaccard import jaccard_distance
+import tensorflow_addons
 
 def main():
     ### load config ###
@@ -81,11 +83,12 @@ def main():
 
     ### train ###
     model_path = f"{dirName}/{config['experiment_name']}-weights.h5"
-    checkpoint = ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
-    early = EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
-    csv_logger = CSVLogger(f"{dirName}/{config['experiment_name']}.log")
-    lr_scheduler = LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
-    callbacks_list = [checkpoint, early, csv_logger]
+    checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
+    early = callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
+    csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
+    lr_scheduler = callbacks.LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
+    terminate_nan = callbacks.TerminateOnNaN()
+    callbacks_list = [checkpoint, early, csv_logger, terminate_nan]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
 
@@ -154,12 +157,17 @@ def get_loss(config):
 
 def get_optimizer(config):
     if config['optimizer'] == 'adam':
-        if config['lr'] == 'default':
-            return optimizers.Adam()
-        else:
-            return optimizers.Adam(lr=config['lr'])
+        # default 1e-3, preferred 3e-4
+        return optimizers.Adam(lr=config['lr'])
     if config['optimizer'] == 'sgd':
+        # default params
         return optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    if config['optimizer'] == 'radam':
+        # default 1e-3
+        return tensorflow_addons.optimizers.RectifiedAdam(lr =config['lr'])
+    if config['optimizer'] == 'lookahead':
+        opt = tf.keras.optimizers.Adam(lr = config['lr'])
+        return tensorflow_addons.optimizers.Lookahead(opt)
 
 def lr_schedule(initial_lrate):
     def exp_decay(epoch):
