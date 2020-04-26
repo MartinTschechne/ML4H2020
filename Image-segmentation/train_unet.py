@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import yaml
 import time
+from collections import defaultdict
 
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import (confusion_matrix,
@@ -32,6 +33,8 @@ def main():
             config = yaml.safe_load(file)
     except Exception as e:
         print('Error reading the config file')
+    # set all parameters not explicitly specified to 'False'
+    config = defaultdict(lambda: False, config)
     print("Configuration:")
     for k,v in config.items():
         print(k,':',v)
@@ -44,7 +47,7 @@ def main():
         print("Directory " , dirName ,  " already exists")
 
     ### load & preprocess data ###
-    SEED = config['seed']
+    SEED = config['seed'] # always set seed to your lucky number
     train, val, y_train, y_val = load_train_images()
     if config['augmentation']:
         data_gen_args = dict(rotation_range=config['rot_range'],
@@ -83,14 +86,21 @@ def main():
 
     ### train ###
     model_path = f"{dirName}/{config['experiment_name']}-weights.h5"
+    # define callbacks
     checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
     early = callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = callbacks.LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
     terminate_nan = callbacks.TerminateOnNaN()
-    callbacks_list = [checkpoint, early, csv_logger, terminate_nan]
+    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=20,min_lr=1e-6)
+    callbacks_list = [checkpoint, csv_logger, terminate_nan]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
+    # either use early stopping or reduce on plateau
+    if config['reduce_lr_on_plateau']:
+        callbacks_list.append(redLRonPlateau)
+    else:
+        callbacks_list.append(early)
 
     if config['class_weights'] == 'balanced':
         class_weights = compute_class_weight('balanced',np.unique(y_train),y_train.flatten())
@@ -146,6 +156,7 @@ def main():
     return 0
 
 def get_loss(config):
+    '''Define Loss functions'''
     if config['loss'] == 'cross-entropy':
         return 'categorical_crossentropy'
     elif config['loss'] == 'jaccard':
@@ -154,20 +165,30 @@ def get_loss(config):
         return Jaccard_XEntropy_Loss(config['alpha'])
     elif config['loss'] == 'focal':
         return Focal_Loss()
+    else:
+        print('ERROR: Please specify a loss function.')
+        exit(-1)
 
 def get_optimizer(config):
+    '''Define Optimizers'''
     if config['optimizer'] == 'adam':
         # default 1e-3, preferred 3e-4
-        return optimizers.Adam(lr=config['lr'])
-    if config['optimizer'] == 'sgd':
+        opt = tf.keras.optimizers.Adam(lr=config['lr'])
+    elif config['optimizer'] == 'sgd':
         # default params
-        return optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-    if config['optimizer'] == 'radam':
+        opt = tf.keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    elif config['optimizer'] == 'radam':
         # default 1e-3
-        return tensorflow_addons.optimizers.RectifiedAdam(lr =config['lr'])
-    if config['optimizer'] == 'lookahead':
-        opt = tf.keras.optimizers.Adam(lr = config['lr'])
-        return tensorflow_addons.optimizers.Lookahead(opt)
+        opt = tensorflow_addons.optimizers.RectifiedAdam(lr =config['lr'])
+    else:
+        print('ERROR: Please specify an optimizer.')
+        exit(-1)
+
+    if config['lookahead']:
+        print(f'Using lookahead with {opt.__class__()}.')
+        opt = tensorflow_addons.optimizers.Lookahead(opt)
+
+    return opt
 
 def lr_schedule(initial_lrate):
     def exp_decay(epoch):
