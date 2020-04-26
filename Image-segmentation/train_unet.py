@@ -92,7 +92,7 @@ def main():
     csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = callbacks.LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
     terminate_nan = callbacks.TerminateOnNaN()
-    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=20,min_lr=1e-6)
+    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=config['patience'],min_lr=1e-6)
     callbacks_list = [checkpoint, csv_logger, terminate_nan]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
