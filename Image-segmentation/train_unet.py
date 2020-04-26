@@ -87,12 +87,12 @@ def main():
     ### train ###
     model_path = f"{dirName}/{config['experiment_name']}-weights.h5"
     # define callbacks
-    checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min')
+    checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_loss', save_weights_only=True,save_best_only=True, mode='min',verbose=1)
     early = callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=config['patience'], verbose=1)
     csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = callbacks.LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
     terminate_nan = callbacks.TerminateOnNaN()
-    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=config['patience'],min_lr=1e-6)
+    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.6,patience=config['patience'],min_lr=1e-6,verbose=1)
     callbacks_list = [checkpoint, csv_logger, terminate_nan]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
@@ -173,7 +173,7 @@ def get_optimizer(config):
     '''Define Optimizers'''
     if config['optimizer'] == 'adam':
         # default 1e-3, preferred 3e-4
-        opt = tf.keras.optimizers.Adam(lr=config['lr'])
+        opt = optimizers.Adam(lr=config['lr'])
     elif config['optimizer'] == 'sgd':
         # default params
         opt = tf.keras.optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)

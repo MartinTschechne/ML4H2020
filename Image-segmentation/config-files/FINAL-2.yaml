@@ -1,0 +1,20 @@
+experiment_name: FINAL-2
+seed: 42
+augmentation: True
+rot_range: 90
+vertical_flip: True
+zoom_range: 0.2
+batch_size: 4
+model:
+  filter_list: [16,32,64,128,256,512]
+  kernel_size: 3
+  dropout: False
+  batch_norm: True
+epochs: 500
+patience: 10
+loss: focal
+alpha: 0.5
+optimizer: 'adam'
+lr: 0.0003
+reduce_lr_on_plateau: True
+class_weights: 'heavy-weighted'

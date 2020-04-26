@@ -4,15 +4,15 @@ augmentation: False
 rot_range: 45
 vertical_flip: True
 zoom_range: 0.2
-batch_size: 4
+batch_size: 32
 model:
-  filter_list: [4,8,16,32]
+  filter_list: [4,8,16]
   kernel_size: 3
 epochs: 5
 patience: 2
 loss: focal
 alpha: 0.5
-optimizer: 'radam'
+optimizer: 'adam'
 lr: 0.0003
 lr_scheduler: False
 reduce_lr_on_plateau: True
