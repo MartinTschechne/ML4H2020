@@ -66,12 +66,12 @@ For more details about the project have a look at the `README.md` in the project
 
 </center>
 
-## Project 3 - Image Segmentation
+## Project 3 - Medical Image Segmentation
 
 ## Project 4 - TBA
 
 ### Requirements  
-pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn
+pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn, keras-contrib, tensorflow-addons
 
 ### References
 

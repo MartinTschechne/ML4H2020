@@ -30,21 +30,27 @@ def generate_train_val_images(val_size=0.2):
     return X_train, X_val, y_train, y_val
 
 def load_test_images(rotated=False):
-    # label_path = '../data/raw/data/test_labels/*.npy'
     if rotated:
         data_path = '../data/raw/data/test_images_randomly_rotated/*.npy'
+        label_path = '../data/raw/data/test_labels/test_labels_randomly_rotated/*.npy'
     else:
         data_path = '../data/raw/data/test_images/*.npy'
+        label_path = '../data/raw/data/test_labels/test_labels/*.npy'
     images = glob.glob(data_path)
-    # labels = glob.glob(label_path)
+    labels = glob.glob(label_path)
     X_test, y_test = list(), list()
-    for img_path in images:
+    for img_path, l_path in zip(images,labels):
         img = np.load(img_path)
         slides, height, width = img.shape
         img = img.reshape((slides,height,width,1))
         X_test.append(img)
+        label = np.load(l_path)
+        slides, height, width = label.shape
+        label = label.reshape((slides,height,width,1))
+        y_test.append(label)
     X_test = np.concatenate(X_test,axis=0)
-    return X_test
+    y_test = np.concatenate(y_test,axis=0)
+    return X_test, y_test
 
 def load_train_images():
     train = pickle.load(open('../data/processed/train.pkl','rb'))
@@ -55,7 +61,7 @@ def load_train_images():
 
 def main():
     train, val, y_train, y_val = generate_train_val_images()
-    #test = load_test_images(True)
+    test, y_test = load_test_images(True)
     pickle.dump(val, open('../data/processed/val.pkl','wb'))
     pickle.dump(y_val, open('../data/processed/y_val.pkl','wb'))
     pickle.dump(train, open('../data/processed/train.pkl','wb'))

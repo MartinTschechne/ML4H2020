@@ -33,7 +33,7 @@ def main():
 
     dirName = './results/'+config['experiment_name']
     test, y_test = load_test_images()
-    test_rotated, _ = load_test_images(rotated=True)
+    test_rotated, y_test_rotated = load_test_images(rotated=True)
 
     ### load model ###
     N_CLASSES = 3
@@ -59,6 +59,7 @@ def main():
     pred_test = pred_test.flatten()
     pred_test_rotated = pred_test_rotated.flatten()
     y_test = y_test.flatten()
+    y_test_rotated = y_test_rotated.flatten()
 
     print("Test scores:")
     print(classification_report(y_test, pred_test))
@@ -66,16 +67,16 @@ def main():
     print(jaccard_score(y_test,pred_test,average='macro'))
 
     print("Rotated test scores:")
-    print(classification_report(y_test, pred_test_rotated))
-    print(confusion_matrix(y_test,pred_test_rotated))
-    print(jaccard_score(y_test,pred_test_rotated,average='macro'))
+    print(classification_report(y_test_rotated, pred_test_rotated))
+    print(confusion_matrix(y_test_rotated,pred_test_rotated))
+    print(jaccard_score(y_test_rotated,pred_test_rotated,average='macro'))
 
     report_dict = {'test-data':classification_report(y_test,pred_test,output_dict=True),
-                    'test-rot-data':classification_report(y_test,pred_test_rotated,output_dict=True),
+                    'test-rot-data':classification_report(y_test_rotated,pred_test_rotated,output_dict=True),
                     'test-jaccard-score': jaccard_score(y_test,pred_test,average='macro').item(),
-                    'test-rot-jaccard-score': jaccard_score(y_test,pred_test_rotated,average='macro').item()}
+                    'test-rot-jaccard-score': jaccard_score(y_test_rotated,pred_test_rotated,average='macro').item()}
     confmat_dict = {'test-confusion_matrix':confusion_matrix(y_test, pred_test).tolist(),
-                    'test-rot-confusion_matrix':confusion_matrix(y_test, pred_test_rotated).tolist()}
+                    'test-rot-confusion_matrix':confusion_matrix(y_test_rotated, pred_test_rotated).tolist()}
     res_dict = {**report_dict, **confmat_dict}
     with open(f'{dirName}/test-eval.yaml', 'w') as file:
         documents = yaml.dump(res_dict, file)
