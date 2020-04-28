@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import yaml
 import time
+from collections import defaultdict
 
 from keras import Model
 
@@ -31,6 +32,7 @@ def main():
     for k,v in config.items():
         print(k,':',v)
 
+    SEED = config['seed'] # always set seed to your lucky number
     dirName = './results/'+config['experiment_name']
     test, y_test = load_test_images()
     test_rotated, y_test_rotated = load_test_images(rotated=True)
@@ -53,6 +55,8 @@ def main():
     try:
         pickle.dump(pred_test,open(f"{dirName}/{config['experiment_name']}-test-preds.pkl",'wb'))
         pickle.dump(pred_test_rotated,open(f"{dirName}/{config['experiment_name']}-test-rot-preds.pkl",'wb'))
+        pickle.dump(test,open(f"{dirName}/test.pkl",'wb'))
+        pickle.dump(y_test,open(f"{dirName}/y_test.pkl",'wb'))
     except Exception as e:
         print(e)
 

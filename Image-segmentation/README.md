@@ -70,7 +70,7 @@ We measure the performance of the model in terms of Overall Precision (OP), Per-
 </center>
 
 No Information Rates:  
-OP: 0.00, Per-class Precision: 0.00, Jaccard-Score: 0.00
+Overall Precision: 0.934, Per-class Precision: 0.311, Jaccard-Score: 0.311
 
 ### **Visualizations**
 <div style="text-align: justify">
