@@ -92,7 +92,7 @@ def main():
     csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     lr_scheduler = callbacks.LearningRateScheduler(lr_schedule(config['lr']),verbose=1)
     terminate_nan = callbacks.TerminateOnNaN()
-    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.6,patience=config['patience'],min_lr=1e-6,verbose=1)
+    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=config['patience'],min_lr=1e-6,verbose=1)
     callbacks_list = [checkpoint, csv_logger, terminate_nan]
     if config['lr_scheduler']:
         callbacks_list.append(lr_scheduler)
@@ -141,7 +141,7 @@ def main():
     y_val = y_val.flatten()
     y_train = y_train.flatten()
 
-    print(classification_report(y_val, pred_val))
+    print(classification_report(y_val, pred_val,digits=3))
     print(confusion_matrix(y_val,pred_val))
     print(jaccard_score(y_val,pred_val,average='macro'))
 

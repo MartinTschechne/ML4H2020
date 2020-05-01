@@ -12,8 +12,6 @@ Martin Tschechne (martints@ethz.ch)
 ## Project 1 - ECG Time Series
 Classifying ECG signals of the [MIT-BIH Arrhythmia Dataset](https://www.physionet.org/physiobank/database/mitdb/) and the [PTB Diagnostic ECG Database](https://www.physionet.org/physiobank/database/ptbdb/) by Recurrent Neural Networks and make use of Transfer Learning techniques in order to improve predictive performance.
 
-For more details about the project have a look at the `README.md` in the project directory `/ECG-time-series`.
-
 **Results**
 
 |Models          |MIT-BIH<sup>*</sup>|PTBDB<sup>*</sup>|PTBDB<sup>°</sup>|PTBDB<sup>&dagger;</sup>|
@@ -41,12 +39,11 @@ For more details about the project have a look at the `README.md` in the project
 
 </center>
 
+For more details about the project have a look at the `README.md` in the project directory `/ECG-time-series`.
+
 ## Project 2 - Diabetes Readmission Prediction
 
 Investigating which medical features from patient records (categorical, numerical and text) play an important role in the prediction of patient readmission. Comparing models using only numerical + categorical features, only text and both.  
-
-For more details about the project have a look at the `README.md` in the project directory `/Diabetes-readmission`.
-
 
 **Results**
 
@@ -66,9 +63,26 @@ For more details about the project have a look at the `README.md` in the project
 
 </center>
 
+For more details about the project have a look at the `README.md` in the project directory `/Diabetes-readmission`.
+
 ## Project 3 - Medical Image Segmentation
 
-## Project 4 - TBA
+Using the U-Net neural network model [4] to segment MRI prostate images from the [NCI-ISBI 2013 Challenge - Automated Segmentation of Prostate Structures](https://wiki.cancerimagingarchive.net/display/Public/NCI-ISBI+2013+Challenge+-+Automated+Segmentation+of+Prostate+Structures) into anatomical regions (Peripheral Zone & Central Gland). Part of the project was to perform hyperparameter-tuning and try different optimizers and loss-functions to reduce generalization error.
+
+**Results**
+
+<center>
+
+|Example Test Image and Prediction|
+|:---:|
+|<p align="center"><img src="./Image-segmentation/visualization/example.png" alt = "Test set example" width="600"></p>|
+|<p align="center"><img src="./Image-segmentation/visualization/rot-example.png?" alt="Rotated test set example" width="600"></p>|
+
+</center>
+
+For more details about the project have a look at the `README.md` in the project directory `/Image-segmentation`.
+
+## Project 4 - Splice Site Prediction
 
 ### Requirements  
 pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn, keras-contrib, tensorflow-addons
@@ -80,6 +94,8 @@ pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn, ke
 [2] CVxTz's GitHub implementation: ECG_Heartbeat_Classification ([link](https://github.com/CVxTz/ECG_Heartbeat_Classification))
 
 [3] Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical Database Patient Records. [https://doi.org/10.1155/2014/781670](https://doi.org/10.1155/2014/781670)
+
+[4] Ronneberger, Olaf & Fischer, Philipp & Brox, Thomas. (2015). U-Net: Convolutional Networks for Biomedical Image Segmentation. LNCS. 9351. 234-241. 10.1007/978-3-319-24574-4_28.
 
 Project Organization
 ------------

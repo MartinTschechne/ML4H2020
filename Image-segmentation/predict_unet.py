@@ -66,12 +66,12 @@ def main():
     y_test_rotated = y_test_rotated.flatten()
 
     print("Test scores:")
-    print(classification_report(y_test, pred_test))
+    print(classification_report(y_test, pred_test,digits=3))
     print(confusion_matrix(y_test,pred_test))
     print(jaccard_score(y_test,pred_test,average='macro'))
 
     print("Rotated test scores:")
-    print(classification_report(y_test_rotated, pred_test_rotated))
+    print(classification_report(y_test_rotated, pred_test_rotated,digits=3))
     print(confusion_matrix(y_test_rotated,pred_test_rotated))
     print(jaccard_score(y_test_rotated,pred_test_rotated,average='macro'))
 

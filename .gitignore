@@ -99,9 +99,10 @@ report.md
 # exclude submit folder
 /ML4H-Project-1-ECG-time-series/
 /ML4H-Project-2-Diabetes-readmission/
+/ML4H-Project-3-Image-segmentation/
 
 # exclude predictions
-*-preds.pkl
+*.pkl
 /Image-segmentation/results/old/
 
 # exclude val

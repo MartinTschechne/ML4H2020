@@ -60,17 +60,14 @@ def load_train_images():
     return train, val, y_train, y_val
 
 def main():
-    #train, val, y_train, y_val = generate_train_val_images()
+    train, val, y_train, y_val = generate_train_val_images()
     test, y_test = load_test_images()
     pickle.dump(test, open('../data/processed/test.pkl','wb'))
     pickle.dump(y_test, open('../data/processed/y_test.pkl','wb'))
-
-    '''
     pickle.dump(val, open('../data/processed/val.pkl','wb'))
     pickle.dump(y_val, open('../data/processed/y_val.pkl','wb'))
     pickle.dump(train, open('../data/processed/train.pkl','wb'))
     pickle.dump(y_train, open('../data/processed/y_train.pkl','wb'))
-    '''
 
 if __name__ == '__main__':
     main()
