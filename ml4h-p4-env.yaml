@@ -1,0 +1,15 @@
+name: ml4h-p4-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.6
+  - pandas
+  - scipy
+  - matplotlib
+  - yaml
+  - pickle5
+  - shogun
+  - ipykernel
+prefix: /home/martin/miniconda3/envs/ml4h-p4-env
+
