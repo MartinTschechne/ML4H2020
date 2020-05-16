@@ -1,0 +1,9 @@
+experiment_name: human
+dataset: human
+seed: 42
+batch_size: 16
+model_id: cnn-model
+epochs: 50
+patience: 35
+reduce_lr_on_plateau: True
+downsample: True
