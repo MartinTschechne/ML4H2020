@@ -1,9 +1,9 @@
-experiment_name: human
-dataset: human
+experiment_name: celegans-5-2
+dataset: celegans
 seed: 42
 batch_size: 16
 model_id: cnn-model
+kernel_size: 5
 epochs: 50
-patience: 35
+patience: 5
 reduce_lr_on_plateau: True
-downsample: True

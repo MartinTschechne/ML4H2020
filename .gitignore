@@ -100,6 +100,7 @@ report.md
 /ML4H-Project-1-ECG-time-series/
 /ML4H-Project-2-Diabetes-readmission/
 /ML4H-Project-3-Image-segmentation/
+/ML4H-Project-4-Splice-site-prediction/
 
 # exclude predictions
 *.pkl

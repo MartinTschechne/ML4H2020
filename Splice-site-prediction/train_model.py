@@ -53,7 +53,7 @@ def main():
         data['train']['data'], data['train']['labels'] = downsample(data['train']['data'], data['train']['labels'], N_per_class)
 
     ### define model ###
-    model = get_model(config['model_id'],data['seq_length'])
+    model = get_model(config['model_id'],data['seq_length'], config['kernel_size'])
     #model.save(f"{dirName}/{config['experiment_name']}.h5")
 
     model_yaml = model.to_yaml()
@@ -68,16 +68,14 @@ def main():
     ### train ###
     model_path = f"{dirName}/{config['experiment_name']}-weights.h5"
     # define callbacks
-    checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_auc', save_weights_only=True,save_best_only=True, mode='max',verbose=1)
-    early = callbacks.EarlyStopping(monitor="val_auc", mode="max", patience=config['patience'], verbose=1)
+    checkpoint = callbacks.ModelCheckpoint(model_path, monitor='val_loss', mode='min', save_weights_only=True,save_best_only=True,verbose=1)
+    early = callbacks.EarlyStopping(monitor="val_loss", mode="min", patience=config['patience']*2, verbose=1)
     csv_logger = callbacks.CSVLogger(f"{dirName}/{config['experiment_name']}.log")
     terminate_nan = callbacks.TerminateOnNaN()
-    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_auc',mode='max',factor=0.5,patience=config['patience'],min_lr=1e-6,verbose=1)
-    callbacks_list = [checkpoint, csv_logger, terminate_nan]
+    redLRonPlateau = callbacks.ReduceLROnPlateau(monitor='val_loss',mode='min',factor=0.5,patience=config['patience'],min_lr=1e-6,verbose=1)
+    callbacks_list = [checkpoint, csv_logger, terminate_nan, early]
     if config['reduce_lr_on_plateau']:
         callbacks_list.append(redLRonPlateau)
-    else:
-        callbacks_list.append(early)
 
     if config['class_weights']:
         class_weights = [1., 1000.]
@@ -113,7 +111,7 @@ def main():
         print(e)
 
     y_train, y_val, y_test = data['train']['labels'], data['val']['labels'], data['test']['labels']
-    print(metrics.classification_report(y_test, pred_test))
+    print(metrics.classification_report(y_test, pred_test,digits=3))
     print(metrics.confusion_matrix(y_test,pred_test))
     report_dict = {}
     AUROC = metrics.roc_auc_score(y_test,score_test)

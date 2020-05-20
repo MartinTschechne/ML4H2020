@@ -1,0 +1,10 @@
+experiment_name: human-up
+dataset: human
+seed: 42
+batch_size: 1024
+model_id: cnn-model-large
+kernel_size: 3
+epochs: 30
+patience: 3
+reduce_lr_on_plateau: True
+upsample: True

@@ -1,8 +1,9 @@
-experiment_name: celegans
+experiment_name: celegans-7-2
 dataset: celegans
 seed: 42
 batch_size: 16
 model_id: cnn-model
-epochs: 100
-patience: 3
+kernel_size: 7
+epochs: 50
+patience: 5
 reduce_lr_on_plateau: True

@@ -8,7 +8,7 @@ config:
       activity_regularizer: null
       batch_input_shape: !!python/tuple
       - null
-      - 398
+      - 82
       - 1
       bias_constraint: null
       bias_initializer:
@@ -75,7 +75,7 @@ config:
       name: max_pooling1d_1
       padding: valid
       pool_size: !!python/tuple
-      - 5
+      - 2
       strides: !!python/tuple
       - 2
       trainable: true
@@ -148,7 +148,7 @@ config:
       name: max_pooling1d_2
       padding: valid
       pool_size: !!python/tuple
-      - 5
+      - 2
       strides: !!python/tuple
       - 2
       trainable: true

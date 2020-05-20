@@ -1,0 +1,73 @@
+AUPRC: 0.051085098553590155
+AUROC: 0.9233680575213722
+confusion_matrix:
+- - 29416
+  - 3832
+- - 13
+  - 72
+test-data:
+  '0':
+    f1-score: 0.9386537326291943
+    precision: 0.9995582588603079
+    recall: 0.884744947064485
+    support: 33248
+  '1':
+    f1-score: 0.036099273000752066
+    precision: 0.018442622950819672
+    recall: 0.8470588235294118
+    support: 85
+  accuracy: 0.8846488464884649
+  macro avg:
+    f1-score: 0.4873765028149732
+    precision: 0.5090004409055638
+    recall: 0.8659018852969484
+    support: 33333
+  weighted avg:
+    f1-score: 0.9363521957417729
+    precision: 0.9970563889700398
+    recall: 0.8846488464884649
+    support: 33333
+train-data:
+  '0':
+    f1-score: 0.9029086439983612
+    precision: 0.8718354430379747
+    recall: 0.9362786745964317
+    support: 1177
+  '1':
+    f1-score: 0.8954565505072783
+    precision: 0.9311926605504587
+    recall: 0.8623619371282922
+    support: 1177
+  accuracy: 0.8993203058623619
+  macro avg:
+    f1-score: 0.8991825972528198
+    precision: 0.9015140517942166
+    recall: 0.899320305862362
+    support: 2354
+  weighted avg:
+    f1-score: 0.8991825972528199
+    precision: 0.9015140517942166
+    recall: 0.8993203058623619
+    support: 2354
+val-data:
+  '0':
+    f1-score: 0.939115176007657
+    precision: 0.9994454127713516
+    recall: 0.8856538222373779
+    support: 99706
+  '1':
+    f1-score: 0.04103852596314908
+    precision: 0.02103726601408209
+    recall: 0.8333333333333334
+    support: 294
+  accuracy: 0.8855
+  macro avg:
+    f1-score: 0.49007685098540305
+    precision: 0.5102413393927169
+    recall: 0.8594935777853556
+    support: 100000
+  weighted avg:
+    f1-score: 0.9364748306565261
+    precision: 0.996568892819885
+    recall: 0.8855
+    support: 100000

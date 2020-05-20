@@ -1,0 +1,29 @@
+AUPRC: 0.11405894007169258
+AUROC: 0.9561026975973257
+test-confusion_matrix:
+- - 33131
+  - 98
+- - 83
+  - 21
+test-data:
+  '0':
+    f1-score: 0.9972758605120178
+    precision: 0.9975010537725055
+    recall: 0.9970507689066779
+    support: 33229
+  '1':
+    f1-score: 0.18834080717488794
+    precision: 0.17647058823529413
+    recall: 0.20192307692307693
+    support: 104
+  accuracy: 0.994569945699457
+  macro avg:
+    f1-score: 0.5928083338434529
+    precision: 0.5869858210038998
+    recall: 0.5994869229148774
+    support: 33333
+  weighted avg:
+    f1-score: 0.9947519579065799
+    precision: 0.9949394131036225
+    recall: 0.994569945699457
+    support: 33333

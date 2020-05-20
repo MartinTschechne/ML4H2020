@@ -83,6 +83,23 @@ Using the U-Net neural network model [4] to segment MRI prostate images from the
 For more details about the project have a look at the `README.md` in the project directory `/Image-segmentation`.
 
 ## Project 4 - Splice Site Prediction
+Splice site prediction is common problem in computational genome finding where it is desirable to find the splice sites that mark the boundaries of <i>exons</i> and <i>introns</i> in organisms whose cells have a nucleus enclosed within membranes (eukaryotes). This classification can then be used to predict a gene's structure, function, interaction or its role in a disease. Main challenge of this task was the high class imbalance of the splice sites.
+
+**Results**
+
+<center>
+
+|C.Elegans DNA|
+|:---:|
+| <p align="center"><img src="./Splice-site-prediction/visualization/AUC-celegans.png?" alt="AUC c.elegans dna" width="500"></p> |
+
+|Human DNA|
+|:---:|
+|<p align="center"><img src="./Splice-site-prediction/visualization/AUC-human.png?" alt="AUC human dna" width="500"></p>|
+
+</center>
+
+For more details about the project have a look at the `README.md` in the project directory `/Splice-site-prediction`.
 
 ### Requirements  
 pandas, numpy, scikit-learn, keras, matplotlib, xgboost, umap-learn, seaborn, keras-contrib, tensorflow-addons

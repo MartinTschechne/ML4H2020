@@ -47,10 +47,12 @@ def upsample(data, labels, seed=42):
     return data_upsampled, labels_upsampled
 
 def encode_seq(seq):
-    char2num = {'A':0, 'C': 1, 'G': 2, 'T': 4}
+    '''Endode single sequence into numeric representation.'''
+    char2num = {'A':0, 'C': 1, 'G': 2, 'T': 3}
     return [char2num[c] for c in seq]
 
 def preprocess_sequences(df):
+    '''Process raw dataframe and return preprocessed data and labels.'''
     data = df.sequences.values
     data = [encode_seq(d) for d in data]
     data = np.array(data)
@@ -61,27 +63,33 @@ def preprocess_sequences(df):
     except:
         labels = 0
     seq_length = len(data[0])
-    return data/4, np.int8(labels), seq_length
+    return data/3, np.int8(labels), seq_length
 
 def load_human():
+    '''Load train and vaildation data and split further split into train, val, test.'''
     train_df = pd.read_csv('../data/raw/exercise_data/human_dna_train_split.csv')
     train, y_train, seq_length = preprocess_sequences(train_df)
+    train, val, y_train, y_val = train_test_split(train, y_train, test_size=0.2, stratify=y_train, random_state=42)
     train_data = {'data':train, 'labels':y_train}
-    val_df = pd.read_csv('../data/raw/exercise_data/human_dna_validation_split.csv')
-    val, y_val, seq_length = preprocess_sequences(val_df)
     val_data = {'data':val, 'labels':y_val}
+    test_df = pd.read_csv('../data/raw/exercise_data/human_dna_validation_split.csv')
+    tes, y_test, seq_length = preprocess_sequences(test_df)
+    test_data = {'data':tes, 'labels':y_test}
+    return {'train':train_data, 'val':val_data, 'test':test_data, 'seq_length':seq_length}
+
+def load_human_final_test():
+    '''Load test data and hidden test data for final prediction.'''
+    hidden_df = pd.read_csv('../data/raw/exercise_data/human_dna_test_hidden_split.csv')
+    hidden, _, seq_length = preprocess_sequences(hidden_df)
+    hidden_data = {'data':hidden}
     test_df = pd.read_csv('../data/raw/exercise_data/human_dna_test_split.csv')
     test, y_test, seq_length = preprocess_sequences(test_df)
     test_data = {'data':test, 'labels':y_test}
-    return {'train':train_data, 'val':val_data , 'test':test_data ,'seq_length':seq_length}
-
-def load_human_hidden():
-    hidden_df = pd.read_csv('../data/raw/exercise_data/human_dna_test_hidden_split.csv')
-    hidden, _, seq_length = preprocess_sequences(hidden_df)
-    return {'data':hidden, 'seq_length':seq_length}
+    return {'test':test_data, 'hidden':hidden_data, 'seq_length':seq_length}
 
 
 def load_celegans():
+    '''Load C.Elegans DNA data.'''
     df = pd.read_csv('../data/raw/exercise_data/C_elegans_acc_seq.csv',header=None,names=['labels','sequences'])
     data, labels, seq_length = preprocess_sequences(df)
     train, test, y_train, y_test = train_test_split(data, labels, test_size=0.1, stratify=labels, random_state=42)
